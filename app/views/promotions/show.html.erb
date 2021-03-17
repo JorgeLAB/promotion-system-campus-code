@@ -1,0 +1,8 @@
+<%= @promotion.name %>
+<%= @promotion.description %>
+<%= "#{@promotion[:discount_rate]},00%" %>
+<%= @promotion.code %>
+<%= @promotion.expiration_date.strftime("%d/%m/%Y") %>
+<%= @promotion.coupon_quantity %>
+
+<%= link_to "Voltar", promotions_path %>

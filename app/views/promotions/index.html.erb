@@ -1,0 +1,12 @@
+<%= @promotions %>
+<% unless @promotions.empty? %>
+	<% @promotions.each do |promotion| %>
+		<%= link_to "#{promotion[:name]}","/promotions/#{promotion.id}"%>
+		<%= promotion[:description] %>
+		<%= "#{promotion[:discount_rate]},00%" %>
+	<% end %>
+<% else %>
+	<p> Nenhuma promoção cadastrada </p>
+<% end %>
+
+<%= link_to "Voltar", root_path %>
