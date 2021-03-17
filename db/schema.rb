@@ -10,6 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2021_03_17_021642) do
+
+  create_table "promotions", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "code"
+    t.integer "discount_rate"
+    t.integer "coupon_quantity"
+    t.date "expiration_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
 end
