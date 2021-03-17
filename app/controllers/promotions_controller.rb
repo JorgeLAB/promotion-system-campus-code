@@ -11,15 +11,15 @@ class PromotionsController < ApplicationController
 		end
 	end
 
-	def index 
+	def index
 		@promotions = Promotion.all
 	end
 
-	def show 
+	def show
 		@promotion = Promotion.find(params[:id])
 	end
 
-	private 
+	private
 
 	def promotion_params
 		params.require(:promotion).permit(:name, :description, :code, :discount_rate, :coupon_quantity, :expiration_date )
