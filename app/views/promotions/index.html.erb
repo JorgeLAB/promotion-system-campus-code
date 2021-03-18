@@ -1,16 +1,19 @@
-<%= @promotions %>
-<% unless @promotions.empty? %>
-	
-	<% @promotions.each do |promotion| %>
-		<%= link_to "#{promotion[:name]}","/promotions/#{promotion.id}"%>
-		<%= promotion[:description] %>
-		<%= "#{promotion[:discount_rate]},00%" %>
-	<% end %>
+<% if @promotions.empty? %>
+  <p> Nenhuma promoção cadastrada </p>
+<% end %>
 
-<% else %>
-	<p> Nenhuma promoção cadastrada </p>
+<% @promotions.each do |promotion| %>
+  <dl>
+    <dt>Nome:</dt>
+    <dd><%= link_to promotion.name, promotion %></dd>
+
+    <dt>Descrição</dt>
+    <dd><%= promotion.description %></dd>
+
+    <dt>Desconto</dt>
+    <dd><%= number_to_percentage(promotion.discount_rate, separator: ",", precision: 2) %></dd>
+  </dl>
 <% end %>
 
 <%= link_to "Registrar uma promoção", new_promotion_path %>
-
 <%= link_to "Voltar", root_path %>

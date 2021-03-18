@@ -1,8 +1,21 @@
-<%= @promotion.name %>
-<%= @promotion.description %>
-<%= "#{@promotion[:discount_rate]},00%" %>
-<%= @promotion.code %>
-<%= @promotion.expiration_date.strftime("%d/%m/%Y") %>
-<%= @promotion.coupon_quantity %>
+<dl>
+  <dt>Nome:</dt>
+  <dd><%= @promotion.name %></dd>
+
+  <dt>Descrição</dt>
+  <dd><%= @promotion.description %></dd>
+
+  <dt>Desconto:</dt>
+  <dd><%= number_to_percentage(@promotion.discount_rate, separator: ",", precision: 2) %></dd>
+
+  <dt>Código:</dt>
+  <dd><%= @promotion.code %></dd>
+
+  <dt>Data de Expiração:</dt>
+  <dd><%= @promotion.expiration_date.strftime("%d/%m/%Y") %></dd>
+
+  <dt>Quantidade de Coupons:</dt>
+  <dd><%= @promotion.coupon_quantity %></dd>
+</dl>
 
 <%= link_to "Voltar", promotions_path %>
