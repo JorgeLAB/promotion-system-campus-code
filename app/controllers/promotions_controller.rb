@@ -6,9 +6,10 @@ class PromotionsController < ApplicationController
 	def create
 		@promotion = Promotion.new(promotion_params)
 
-		if @promotion.save
-			redirect_to @promotion
-		end
+		return redirect_to @promotion if @promotion.save
+
+    flash[:notice] = @promotion.errors.full_messages
+    render :new
 	end
 
 	def index
