@@ -28,13 +28,14 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
+
     Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
                       expiration_date: '22/12/2033')
 
-    visit root_path
-    click_on 'Promoções'
+    visit promotions_path
+
     click_on 'Cyber Monday'
 
     assert_text 'Cyber Monday'
@@ -47,6 +48,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
   test 'no promotion are available' do
     visit root_path
+
     click_on 'Promoções'
 
     assert_text 'Nenhuma promoção cadastrada'
@@ -58,6 +60,7 @@ class PromotionsTest < ApplicationSystemTestCase
                       expiration_date: '22/12/2033')
 
     visit root_path
+
     click_on 'Promoções'
     click_on 'Voltar'
 
@@ -70,17 +73,17 @@ class PromotionsTest < ApplicationSystemTestCase
                       expiration_date: '22/12/2033')
 
     visit root_path
+
     click_on 'Promoções'
     click_on 'Natal'
+
     assert_link 'Voltar', href: "/promotions"
 
-    # assert_current_path promotions_path
   end
 
   test 'create promotion' do
-    visit root_path
-    click_on 'Promoções'
-    click_on 'Registrar uma promoção'
+    visit new_promotion_path
+
     fill_in 'Nome', with: 'Cyber Monday'
     fill_in 'Descrição', with: 'Promoção de Cyber Monday'
     fill_in 'Código', with: 'CYBER15'
@@ -101,51 +104,37 @@ class PromotionsTest < ApplicationSystemTestCase
 
   test 'create and attributes cannot be blank' do
 
-    visit root_path
-    click_on 'Promoções'
-    click_on 'Registrar uma promoção'
-    fill_in 'Nome', with: ''
-    fill_in 'Descrição', with: ''
-    fill_in 'Código', with: ''
-    fill_in 'Desconto', with: ''
-    fill_in 'Quantidade de cupons', with: ''
-    fill_in 'Data de término', with: ''
+    visit new_promotion_path
+
     click_on 'Criar promoção'
 
     assert_text 'não pode ficar em branco', count: 5
   end
 
-  test 'create and code must be unique' do
+  test 'code and name must be unique' do
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
 
-    visit root_path
-    click_on 'Promoções'
-    click_on 'Registrar uma promoção'
-    # fill_in 'Nome', with: ''
-    # fill_in 'Descrição', with: ''
+    visit new_promotion_path
+
+    fill_in 'Nome', with: 'Natal'
     fill_in 'Código', with: 'NATAL10'
-    # fill_in 'Desconto', with: ''
-    # fill_in 'Quantidade de cupons', with: ''
-    # fill_in 'Data de término', with: ''
     click_on 'Criar promoção'
 
-    assert_text 'deve ser único'
+    assert_text 'deve ser único', count: 2
   end
 
   test 'edit promotion' do
-    Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
-                      code: 'Free22', discount_rate: 40, coupon_quantity: 200,
-                      expiration_date: '23/09/2023'
-                      )
+    promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
+                                  code: 'Free22', discount_rate: 40, coupon_quantity: 200,
+                                  expiration_date: '23/09/2023'
+                                  )
 
-    visit root_path
-    click_on 'Promoções'
-    click_on 'Editar Promoção'
+    visit edit_promotion_path promotion.id
 
     assert_selector "form input[type=text][value='Independência']"
-    # assert_text 'Promoção de independência.'
+    assert_text 'Promoção da independência.'
     assert_selector "form input[type=text][value='Free22']"
     assert_selector "form input[type=number][value='40']"
     assert_selector "form input[type=number][value='200']"
@@ -158,13 +147,11 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Atualizar Promoção'
 
     assert_text 'Promoção atualizada com sucesso.'
-
     assert_text 'Páscoa'
     assert_text 'Ovo de Páscoa'
     assert_text 'Free22'
     assert_text '40'
     assert_text '200'
     assert_text '4/04/2023'
-
   end
 end
