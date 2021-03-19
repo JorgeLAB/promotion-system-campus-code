@@ -8,7 +8,7 @@ class PromotionsController < ApplicationController
 
 		return redirect_to @promotion if @promotion.save
 
-    flash[:notice] = @promotion.errors.full_messages
+    flash[:error] = @promotion.errors.full_messages
     render :new
 	end
 
@@ -19,6 +19,19 @@ class PromotionsController < ApplicationController
 	def show
 		@promotion = Promotion.find(params[:id])
 	end
+
+  def edit
+    @promotion = Promotion.find(params[:id])
+  end
+
+  def update
+    @promotion = Promotion.find(params[:id])
+    @promotion.attributes = promotion_params
+
+    if @promotion.save
+      redirect_to @promotion,success: 'Promoção atualizada com sucesso.'
+    end
+  end
 
 	private
 

@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <% flash.each do |mensagem| %>
+    <% flash.each do |attr, mensagem| %>
       <%= content_tag :div, mensagem %>
     <% end %>
 
