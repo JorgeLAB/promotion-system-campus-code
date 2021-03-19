@@ -29,5 +29,9 @@
     <%= f.text_field :expiration_date %>
   </div>
 
-  <%= f.submit "Criar promoção" %>
+  <% if @promotion.id.present? %>
+    <%= f.submit "Atualizar Promoção" %>
+  <% else %>
+    <%= f.submit "Criar promoção" %>
+  <% end %>
 <% end %>

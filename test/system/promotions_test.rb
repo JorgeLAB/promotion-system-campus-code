@@ -72,9 +72,9 @@ class PromotionsTest < ApplicationSystemTestCase
     visit root_path
     click_on 'Promoções'
     click_on 'Natal'
-    click_on 'Voltar'
+    assert_link 'Voltar', href: "/promotions"
 
-    assert_current_path promotions_path
+    # assert_current_path promotions_path
   end
 
   test 'create promotion' do
@@ -89,7 +89,7 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Data de término', with: '22/12/2033'
     click_on 'Criar promoção'
 
-    assert_current_path promotion_path(Promotion.last) # pode ser omitido
+    # assert_current_path promotion_path(Promotion.last) # pode ser omitido
     assert_text 'Cyber Monday'
     assert_text 'Promoção de Cyber Monday'
     assert_text '15,00%'
@@ -100,9 +100,6 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create and attributes cannot be blank' do
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
 
     visit root_path
     click_on 'Promoções'
@@ -137,4 +134,37 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'deve ser único'
   end
 
+  test 'edit promotion' do
+    Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
+                      code: 'Free22', discount_rate: 40, coupon_quantity: 200,
+                      expiration_date: '23/09/2023'
+                      )
+
+    visit root_path
+    click_on 'Promoções'
+    click_on 'Editar Promoção'
+
+    assert_selector "form input[type=text][value='Independência']"
+    # assert_text 'Promoção de independência.'
+    assert_selector "form input[type=text][value='Free22']"
+    assert_selector "form input[type=number][value='40']"
+    assert_selector "form input[type=number][value='200']"
+    assert_selector "form input[type=text][value='2023-09-23']"
+
+    fill_in 'Nome', with: 'Páscoa'
+    fill_in 'Descrição', with: 'Ovo de Páscoa'
+    fill_in 'Data de término', with: '4/04/2023'
+
+    click_on 'Atualizar Promoção'
+
+    assert_text 'Promoção atualizada com sucesso.'
+
+    assert_text 'Páscoa'
+    assert_text 'Ovo de Páscoa'
+    assert_text 'Free22'
+    assert_text '40'
+    assert_text '200'
+    assert_text '4/04/2023'
+
+  end
 end
