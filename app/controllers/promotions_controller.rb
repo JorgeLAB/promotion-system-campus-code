@@ -33,6 +33,14 @@ class PromotionsController < ApplicationController
     end
   end
 
+  def destroy
+    @promotion = Promotion.find(params[:id])
+
+    if @promotion.destroy
+      redirect_to promotions_path, success: 'Promoção deletada com sucesso.'
+    end
+  end
+
 	private
 
 	def promotion_params
