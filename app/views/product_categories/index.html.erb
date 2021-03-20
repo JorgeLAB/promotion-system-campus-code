@@ -1,0 +1,19 @@
+<% if @product_categories.empty? %>
+  <p> Nenhuma categoria cadastrada. </p>
+<% end %>
+
+<% @product_categories.each do |category| %>
+  <dl>
+    <dt>Nome</dt>
+    <dd> <%= link_to category.name, category %> </dd>
+    <dt>Código</dt>
+    <dd> <%= category.code %> </dd>
+  </dl>
+  <%= link_to 'Atualizar Categoria', edit_product_category_path(category) %>
+  <%= link_to 'Deletar Categoria', category, method: :delete,
+                                   data: {confirm: 'tem certeza?'} %>
+
+<% end %>
+
+<%= link_to 'Nova Categoria', new_product_category_path %>
+<%= link_to 'Voltar', root_path %>
