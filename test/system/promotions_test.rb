@@ -55,16 +55,10 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotions and return to home page' do
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
-
     visit root_path
 
     click_on 'Promoções'
-    click_on 'Voltar'
-
-    assert_current_path root_path
+    assert_link 'Voltar', href: "/"
   end
 
   test 'view details and return to promotions page' do
@@ -78,7 +72,6 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Natal'
 
     assert_link 'Voltar', href: "/promotions"
-
   end
 
   test 'create promotion' do
@@ -170,6 +163,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy one promotion and not destroy others' do
+
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
