@@ -14,6 +14,9 @@
     <dd><%= number_to_percentage(promotion.discount_rate, separator: ",", precision: 2) %></dd>
   </dl>
   <%= link_to "Editar Promoção", edit_promotion_path(promotion) %>
+  <%= link_to 'Deletar Promoção', promotion, method: :delete,
+      data: { confirm: 'tem certeza?' } %>
+
 <% end %>
 
 <%= link_to "Registrar uma promoção", new_promotion_path %>

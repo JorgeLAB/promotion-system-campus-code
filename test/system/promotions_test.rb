@@ -154,4 +154,41 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text '200'
     assert_text '4/04/2023'
   end
+
+  test 'destroy promotion' do
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    visit promotions_path
+
+    accept_confirm do
+      click_on "Deletar Promoção"
+    end
+
+    assert_text 'Promoção deletada com sucesso.'
+    assert_text 'Nenhuma promoção cadastrada'
+  end
+
+  test 'should destroy one promotion and not destroy others' do
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                      description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15', discount_rate: 15,
+                      expiration_date: '22/12/2033')
+
+    visit promotions_path
+
+    accept_confirm do
+      click_on("Deletar Promoção", match: :first)
+    end
+
+    assert_text 'Promoção deletada com sucesso.'
+
+    assert_text 'Cyber Monday'
+    assert_text 'Promoção de Cyber Monday'
+    assert_text '15,00%'
+  end
 end
