@@ -55,16 +55,10 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotions and return to home page' do
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
-
     visit root_path
 
     click_on 'Promoções'
-    click_on 'Voltar'
-
-    assert_current_path root_path
+    assert_link 'Voltar', href: "/"
   end
 
   test 'view details and return to promotions page' do
@@ -78,7 +72,6 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Natal'
 
     assert_link 'Voltar', href: "/promotions"
-
   end
 
   test 'create promotion' do
@@ -89,7 +82,7 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Código', with: 'CYBER15'
     fill_in 'Desconto', with: '15'
     fill_in 'Quantidade de cupons', with: '90'
-    fill_in 'Data de término', with: '22/12/2033'
+    fill_in 'Data de término', with: I18n.l(Date.today, format: '%m-%d-%Y')
     click_on 'Criar promoção'
 
     # assert_current_path promotion_path(Promotion.last) # pode ser omitido
@@ -97,7 +90,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'Promoção de Cyber Monday'
     assert_text '15,00%'
     assert_text 'CYBER15'
-    assert_text '22/12/2033'
+    assert_text  I18n.l(Date.today, format: '%d/%m/%Y')
     assert_text '90'
     assert_link 'Voltar'
   end
@@ -128,7 +121,7 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'edit promotion' do
     promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
                                   code: 'Free22', discount_rate: 40, coupon_quantity: 200,
-                                  expiration_date: '23/09/2023'
+                                  expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
                                   )
 
     visit edit_promotion_path promotion.id
@@ -136,13 +129,13 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_selector "form input[type=text][value='Independência']"
     assert_text 'Promoção da independência.'
     assert_selector "form input[type=text][value='Free22']"
-    assert_selector "form input[type=number][value='40']"
+    assert_selector "form input[type=number][value='40.0']"
     assert_selector "form input[type=number][value='200']"
-    assert_selector "form input[type=text][value='2023-09-23']"
+    assert_selector "form input[type=date][value='#{I18n.l(Date.today, format: '%Y-%m-%d')}']"
 
     fill_in 'Nome', with: 'Páscoa'
     fill_in 'Descrição', with: 'Ovo de Páscoa'
-    fill_in 'Data de término', with: '4/04/2023'
+    fill_in 'Data de término', with: I18n.l(Date.today.tomorrow, format: '%m-%d-%Y')
 
     click_on 'Atualizar Promoção'
 
@@ -152,7 +145,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'Free22'
     assert_text '40'
     assert_text '200'
-    assert_text '4/04/2023'
+    assert_text I18n.l(Date.today.tomorrow, format: '%d/%m/%Y')
   end
 
   test 'destroy promotion' do
@@ -170,6 +163,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy one promotion and not destroy others' do
+
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
