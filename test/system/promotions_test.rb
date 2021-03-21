@@ -85,7 +85,8 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Data de término', with: I18n.l(Date.today, format: '%m-%d-%Y')
     click_on 'Criar promoção'
 
-    # assert_current_path promotion_path(Promotion.last) # pode ser omitido
+
+    assert_text 'Promoção criada com sucesso.'
     assert_text 'Cyber Monday'
     assert_text 'Promoção de Cyber Monday'
     assert_text '15,00%'
@@ -148,6 +149,26 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text I18n.l(Date.today.tomorrow, format: '%d/%m/%Y')
   end
 
+  test 'edit promotion cannot be blank' do
+    promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
+                                  code: 'Free22', discount_rate: 40, coupon_quantity: 200,
+                                  expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
+                                  )
+
+    visit edit_promotion_path promotion.id
+
+    fill_in 'Nome', with: ''
+    fill_in 'Código', with: ''
+    fill_in 'Desconto', with: ''
+    fill_in 'Quantidade de cupons', with: ''
+    fill_in 'Data de término', with: ''
+
+
+    click_on 'Atualizar Promoção'
+
+    assert_text 'não pode ficar em branco', count: 5
+  end
+
   test 'destroy promotion' do
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
@@ -167,7 +188,6 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
-
     Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,

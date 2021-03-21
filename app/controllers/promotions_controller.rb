@@ -1,4 +1,10 @@
 class PromotionsController < ApplicationController
+  before_action :load_promotion, only: [:show, :edit, :update, :destroy]
+
+  def index
+    @promotions = Promotion.all
+  end
+
 	def new
 		@promotion = Promotion.new
 	end
@@ -6,35 +12,20 @@ class PromotionsController < ApplicationController
 	def create
 		@promotion = Promotion.new(promotion_params)
 
-		return redirect_to @promotion if @promotion.save
-
-    flash[:error] = @promotion.errors.full_messages
-    render :new
+    promotion_save!('criada')
 	end
 
-	def index
-		@promotions = Promotion.all
-	end
+	def show; end
 
-	def show
-		@promotion = Promotion.find(params[:id])
-	end
-
-  def edit
-    @promotion = Promotion.find(params[:id])
-  end
+  def edit; end
 
   def update
-    @promotion = Promotion.find(params[:id])
     @promotion.attributes = promotion_params
 
-    if @promotion.save
-      redirect_to @promotion,success: 'Promoção atualizada com sucesso.'
-    end
+    promotion_save!('atualizada')
   end
 
   def destroy
-    @promotion = Promotion.find(params[:id])
 
     if @promotion.destroy
       redirect_to promotions_path, success: 'Promoção deletada com sucesso.'
@@ -43,7 +34,25 @@ class PromotionsController < ApplicationController
 
 	private
 
-	def promotion_params
-		params.require(:promotion).permit(:name, :description, :code, :discount_rate, :coupon_quantity, :expiration_date )
-	end
+    def promotion_params
+    	params.require(:promotion)
+            .permit(:name, :description,
+                    :code,:discount_rate,
+                    :coupon_quantity,:expiration_date
+                    )
+    end
+
+    def load_promotion
+      @promotion = Promotion.find(params[:id])
+    end
+
+    def promotion_save!(action)
+
+      if @promotion.save
+        redirect_to @promotion, success: "Promoção #{action} com sucesso."
+      else
+        flash[:error] = @promotion.errors.full_messages
+        render :new
+      end
+    end
 end
