@@ -112,6 +112,19 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     assert_text 'CARNAVAL'
   end
 
+  test 'edit product_category attributes cannot be blank' do
+    product_category = ProductCategory.create!(name: 'Produto Curso', code: 'CURSO')
+
+    visit edit_product_category_path product_category.id
+
+    fill_in 'Nome', with: ''
+    fill_in 'Código', with: ''
+
+    click_on 'Atualizar Categoria'
+
+    assert_text 'não pode ficar em branco', count: 2
+  end
+
   test 'destroy product_category' do
     product_curso = ProductCategory.create!(name: 'Produto Curso', code: 'CURSO')
 
