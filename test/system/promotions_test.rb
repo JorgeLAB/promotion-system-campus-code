@@ -25,8 +25,9 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotion details' do
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+    Promotion.create!(name: 'Natal', coupon_quantity: 100,
+                      description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10,
                       expiration_date: '22/12/2033')
 
     Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
@@ -72,6 +73,21 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Natal'
 
     assert_link 'Voltar', href: "/promotions"
+  end
+
+  test 'should generate coupons' do
+    promotion = Promotion.create!(name: 'Natal', coupon_quantity: 100,
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10,
+                                  expiration_date: '22/12/2033')
+
+    visit promotion_path(promotion)
+
+    click_on 'Gerar coupons'
+
+    assert_text 'NATAL10-0001'
+    assert_text 'NATAL10-0100'
+
   end
 
   test 'create promotion' do

@@ -32,6 +32,13 @@ class PromotionsController < ApplicationController
     end
   end
 
+  def generate_coupon
+    @promotion = Promotion.find(params[:id])
+    @promotion.generated_coupons!
+
+    render :show
+  end
+
 	private
 
     def promotion_params

@@ -18,4 +18,12 @@
   <dd><%= @promotion.coupon_quantity %></dd>
 </dl>
 
+<%= link_to "Gerar coupons", generate_coupon_promotion_path(@promotion), method: :post %>
+
+<ul>
+  <% @promotion.coupons.each do |coupon| %>
+    <li><%= coupon.code %></li>
+  <% end %>
+</ul>
+
 <%= link_to "Voltar", promotions_path %>

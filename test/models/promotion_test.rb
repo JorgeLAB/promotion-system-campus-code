@@ -22,6 +22,5 @@ class PromotionTest < ActiveSupport::TestCase
     refute promotion.valid?
     assert_includes promotion.errors[:code], 'deve ser único'
     assert_includes promotion.errors[:name], 'deve ser único'
-
   end
 end
