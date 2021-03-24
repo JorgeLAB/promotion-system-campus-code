@@ -32,6 +32,13 @@ class PromotionsController < ApplicationController
     end
   end
 
+  def generate_coupon
+    @promotion = Promotion.find(params[:id])
+    @promotion.generated_coupons!
+
+    render :show
+  end
+
 	private
 
     def promotion_params
@@ -51,7 +58,7 @@ class PromotionsController < ApplicationController
       if @promotion.save
         redirect_to @promotion, success: "Promoção #{action} com sucesso."
       else
-        flash[:error] = @promotion.errors.full_messages
+        flash.now[:error] = @promotion.errors.full_messages
         render :new
       end
     end
