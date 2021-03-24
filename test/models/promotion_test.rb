@@ -24,7 +24,7 @@ class PromotionTest < ActiveSupport::TestCase
     assert_includes promotion.errors[:name], 'deve ser único'
   end
 
-  test 'promotion coupons must begin empty' do
+  test 'promotion coupons must start empty' do
     promotion =  Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                expiration_date: '22/12/2033')
@@ -39,6 +39,21 @@ class PromotionTest < ActiveSupport::TestCase
 
     promotion.generated_coupons!
 
-    assert_equal 100, promotion.coupons.size
+    assert_equal promotion.coupon_quantity, promotion.coupons.size
+  end
+
+  test 'coupons cannot be generated twice' do
+    promotion =  Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                               code: 'NATAL10', discount_rate: 10, coupon_quantity: 1,
+                               expiration_date: '22/12/2033')
+
+    Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
+
+    assert_no_difference 'Coupon.count' do
+      promotion.generated_coupons!
+    end
   end
 end
+
+
+# TODO: O que penso é que não temos como fazer a criação em nosso sistema de um coupon por fora

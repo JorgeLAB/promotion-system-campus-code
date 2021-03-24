@@ -87,6 +87,21 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_text 'NATAL10-0001'
     assert_text 'NATAL10-0100'
+    assert_selector 'div#coupons_list li', count: promotion.coupon_quantity
+
+  end
+
+  test 'generate coupons button need hide' do
+    promotion = Promotion.create!(name: 'Natal', coupon_quantity: 100,
+                              description: 'Promoção de Natal',
+                              code: 'NATAL10', discount_rate: 10,
+                              expiration_date: '22/12/2033')
+
+    visit promotion_path promotion
+
+    click_on 'Gerar coupons'
+
+    assert_no_link 'Gerar coupons'
 
   end
 

@@ -10,9 +10,19 @@ class Promotion < ApplicationRecord
   validates :expiration_date, presence: { message: "não pode ficar em branco" }
 
   def generated_coupons!
-    (1..coupon_quantity).each do |index|
-      Coupon.create!(code: "#{code.upcase}-#{sprintf('%04d', index)}", promotion: self)
-    end
+    return if coupons?
+
+    coupons_generated =  (1..coupon_quantity).map do |index|
+                            { code: "#{ code.upcase }-#{ sprintf('%04d', index) }" }
+                          end
+
+    coupons.create_with( created_at: Time.now, updated_at: Time.now )
+           .insert_all( coupons_generated )
+
+  end
+
+  def coupons?
+    coupons.any?
   end
 
 end
