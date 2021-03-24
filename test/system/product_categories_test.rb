@@ -16,7 +16,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     assert_text 'NATALINO'
   end
 
- test 'no product_categories available' do
+  test 'no product_categories available' do
     visit product_categories_path
 
     assert_text 'Nenhuma categoria cadastrada.'

@@ -81,7 +81,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10,
                                   expiration_date: '22/12/2033')
 
-    visit promotion_path(promotion)
+    visit promotion_path promotion
 
     click_on 'Gerar coupons'
 
@@ -141,7 +141,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
                                   )
 
-    visit edit_promotion_path promotion.id
+    visit edit_promotion_path promotion
 
     assert_selector "form input[type=text][value='Independência']"
     assert_text 'Promoção da independência.'
