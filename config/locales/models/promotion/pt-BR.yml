@@ -23,6 +23,12 @@ pt-BR:
       generate_coupons: Gerar coupons
     generated_coupons:
       success: Cupons gerados com sucesso
+    destroy:
+      success: Promoção deletada com sucesso.
+    update:
+      success: Promoção atualizada com sucesso.
+    create:
+      success: Promoção criada com sucesso.
   helpers:
     submit:
       create: Criar %{model}

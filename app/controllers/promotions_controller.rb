@@ -1,5 +1,5 @@
 class PromotionsController < ApplicationController
-  before_action :load_promotion, only: [:show, :edit, :update, :destroy]
+  before_action :load_promotion, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @promotions = Promotion.all
@@ -12,7 +12,12 @@ class PromotionsController < ApplicationController
 	def create
 		@promotion = Promotion.new(promotion_params)
 
-    promotion_save!('criada')
+    if @promotion.save
+      return redirect_to @promotion, success: t('.success')
+    else
+      flash.now[:error] = @promotion.errors.full_messages
+      render :new
+    end
 	end
 
 	def show; end
@@ -22,13 +27,18 @@ class PromotionsController < ApplicationController
   def update
     @promotion.attributes = promotion_params
 
-    promotion_save!('atualizada')
+    if @promotion.save
+      return redirect_to @promotion, success: t('.success')
+    else
+      flash.now[:error] = @promotion.errors.full_messages
+      render :new
+    end
   end
 
   def destroy
 
     if @promotion.destroy
-      redirect_to promotions_path, success: t('confirmations.success', action: 'deletada', model: t('models.promotions.one'))
+      redirect_to promotions_path, success: t('.success')
     end
   end
 
@@ -53,13 +63,8 @@ class PromotionsController < ApplicationController
       @promotion = Promotion.find(params[:id])
     end
 
-    def promotion_save!(action)
-
-      if @promotion.save
-        redirect_to @promotion, success: t('confirmations.success', action: action, model: t('models.promotion.one'))
-      else
-        flash.now[:error] = @promotion.errors.full_messages
-        render :new
-      end
+    def defined_model
+      @model = Promotion.model_name.human
     end
 end
+
