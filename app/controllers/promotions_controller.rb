@@ -28,7 +28,7 @@ class PromotionsController < ApplicationController
   def destroy
 
     if @promotion.destroy
-      redirect_to promotions_path, success: 'Promoção deletada com sucesso.'
+      redirect_to promotions_path, success: t('confirmations.success', action: 'deletada', model: t('models.promotions.one'))
     end
   end
 
@@ -56,7 +56,7 @@ class PromotionsController < ApplicationController
     def promotion_save!(action)
 
       if @promotion.save
-        redirect_to @promotion, success: "Promoção #{action} com sucesso."
+        redirect_to @promotion, success: t('confirmations.success', action: action, model: t('models.promotion.one'))
       else
         flash.now[:error] = @promotion.errors.full_messages
         render :new

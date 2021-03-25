@@ -1,0 +1,25 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      product_category: Categoria
+    attributes:
+      product_category:
+        name: Nome
+        code: Código
+    errors:
+      messages:
+        taken: deve ser único
+  messages:
+    categories_empty: Nenhuma categoria cadastrada.
+  helpers:
+    submit:
+      create: Criar %{model}
+      submit: Salvar %{model}
+      update: Atualizar %{model}
+
+  buttons:
+    atualizar_categoria: Atualizar Categoria
+    criar_categoria: Nova Categoria
+    deletar_categoria: Deletar Categoria
+

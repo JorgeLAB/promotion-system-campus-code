@@ -1,0 +1,11 @@
+---
+pt-BR:
+  buttons:
+    back: Voltar
+  messages:
+    confirm: Tem certeza?
+  confirmations:
+    success: %{model} %{action} com sucesso.
+
+
+

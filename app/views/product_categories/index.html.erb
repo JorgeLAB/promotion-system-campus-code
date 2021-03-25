@@ -1,19 +1,19 @@
 <% if @product_categories.empty? %>
-  <p> Nenhuma categoria cadastrada. </p>
+  <p> <%= t('messages.categories_empty') %> </p>
 <% end %>
 
 <% @product_categories.each do |category| %>
   <dl>
-    <dt>Nome</dt>
+    <dt> <%= ProductCategory.human_attribute_name(:name) %> </dt>
     <dd> <%= link_to category.name, category %> </dd>
-    <dt>Código</dt>
+    <dt> <%= ProductCategory.human_attribute_name(:code) %> </dt>
     <dd> <%= category.code %> </dd>
   </dl>
-  <%= link_to 'Atualizar Categoria', edit_product_category_path(category) %>
-  <%= link_to 'Deletar Categoria', category, method: :delete,
+  <%= link_to t('buttons.atualizar_categoria'), edit_product_category_path(category) %>
+  <%= link_to t('buttons.deletar_categoria'), category, method: :delete,
                                    data: {confirm: 'tem certeza?'} %>
 
 <% end %>
 
-<%= link_to 'Nova Categoria', new_product_category_path %>
-<%= link_to 'Voltar', root_path %>
+<%= link_to t('buttons.criar_categoria'), new_product_category_path %>
+<%= link_to t('buttons.back'), root_path %>
