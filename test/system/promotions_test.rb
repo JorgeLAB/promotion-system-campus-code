@@ -1,6 +1,9 @@
 require 'application_system_test_case'
 
 class PromotionsTest < ApplicationSystemTestCase
+
+  include LoginMacros
+
   test 'view promotions' do
     # arrange
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
@@ -12,8 +15,7 @@ class PromotionsTest < ApplicationSystemTestCase
                       code: 'CYBER15', discount_rate: 15,
                       expiration_date: '22/12/2033')
 
-    user = User.create!(email: "mclovin@iugu.com.br", password: "12345678")
-    login_as user, scope: :user
+    login_user
 
     # act
     visit root_path
@@ -52,6 +54,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'no promotion are available' do
+    login_user
+
     visit root_path
 
     click_on 'Promoções'
@@ -60,6 +64,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotions and return to home page' do
+    login_user
+
     visit root_path
 
     click_on 'Promoções'
@@ -70,6 +76,8 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
+
+    login_user
 
     visit root_path
 
