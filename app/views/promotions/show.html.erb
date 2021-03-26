@@ -1,25 +1,25 @@
 <dl>
-  <dt>Nome:</dt>
+  <dt><%= Promotion.human_attribute_name(:name) %></dt>
   <dd><%= @promotion.name %></dd>
 
-  <dt>Descrição</dt>
+  <dt><%= Promotion.human_attribute_name(:description) %></dt>
   <dd><%= @promotion.description %></dd>
 
-  <dt>Desconto:</dt>
+  <dt><%= Promotion.human_attribute_name(:discount_rate) %></dt>
   <dd><%= number_to_percentage(@promotion.discount_rate, separator: ",", precision: 2) %></dd>
 
-  <dt>Código:</dt>
+  <dt><%= Promotion.human_attribute_name(:code) %></dt>
   <dd><%= @promotion.code %></dd>
 
-  <dt>Data de Expiração:</dt>
+  <dt><%= Promotion.human_attribute_name(:expiration_date) %></dt>
   <dd><%= @promotion.expiration_date.strftime("%d/%m/%Y") %></dd>
 
-  <dt>Quantidade de Coupons:</dt>
+  <dt><%= Promotion.human_attribute_name(:coupon_quantity) %></dt>
   <dd><%= @promotion.coupon_quantity %></dd>
 </dl>
 
 <% if @promotion.coupons.empty? %>
-  <%= link_to "Gerar coupons", generate_coupon_promotion_path(@promotion), method: :post %>
+  <%= link_to t('.generate_coupons'), generate_coupon_promotion_path(@promotion), method: :post %>
 <% end %>
 
 
@@ -31,4 +31,4 @@
   </ul>
 </div>
 
-<%= link_to "Voltar", promotions_path %>
+<%= link_to t('buttons.back'), promotions_path %>

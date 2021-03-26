@@ -1,13 +1,9 @@
 <%= form_with model: @product_category do |f| %>
-  <%= f.label :name, 'Nome' %>
+  <%= f.label :name %>
   <%= f.text_field :name %>
 
-  <%= f.label :code, 'Código' %>
+  <%= f.label :code %>
   <%= f.text_field :code %>
 
-  <% if @product_category.id.present? %>
-    <%= f.submit "Atualizar Categoria" %>
-  <% else %>
-    <%= f.submit "Criar Categoria" %>
-  <% end %>
+  <%= f.submit %>
 <% end %>

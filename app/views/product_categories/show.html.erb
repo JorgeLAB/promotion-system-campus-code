@@ -1,9 +1,9 @@
 <dl>
-  <dt>Nome</dt>
+  <dt><%= ProductCategory.human_attribute_name(:name) %></dt>
   <dd> <%= @product_category.name %> </dd>
 
-  <dt>Código</dt>
+  <dt><%= ProductCategory.human_attribute_name(:code) %></dt>
   <dd> <%= @product_category.code %> </dd>
 </dl>
 
-<%= link_to 'Voltar', product_categories_path %>
+<%= link_to t('buttons.back'), product_categories_path %>

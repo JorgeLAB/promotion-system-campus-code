@@ -1,0 +1,7 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      coupon: Coupon
+    attributes:
+      coupon:

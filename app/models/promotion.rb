@@ -1,13 +1,13 @@
 class Promotion < ApplicationRecord
   has_many :coupons
 
-  validates :name, presence: { message: "não pode ficar em branco" },
-                   uniqueness: { message: "deve ser único" }
-  validates :code, presence: { message: "não pode ficar em branco" },
-                   uniqueness: { message: "deve ser único" }
-  validates :discount_rate, presence: { message: "não pode ficar em branco" }
-  validates :coupon_quantity, presence: { message: "não pode ficar em branco" }
-  validates :expiration_date, presence: { message: "não pode ficar em branco" }
+  validates :name, presence: true,
+                   uniqueness: true
+  validates :code, presence: true,
+                   uniqueness: true
+  validates :discount_rate, presence: true
+  validates :coupon_quantity, presence: true
+  validates :expiration_date, presence: true
 
   def generated_coupons!
     return if coupons?
@@ -27,5 +27,3 @@ class Promotion < ApplicationRecord
 
 end
 
-# TODO: lembrar de colocar um transaction
-# TODO: Podemos implementar com bulk_insert

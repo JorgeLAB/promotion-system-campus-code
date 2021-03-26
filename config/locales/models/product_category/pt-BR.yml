@@ -1,0 +1,30 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      product_category: Categoria
+    attributes:
+      product_category:
+        name: Nome
+        code: Código
+    errors:
+      messages:
+        taken: deve ser único
+  product_categories:
+    index:
+      categories_empty: Nenhuma categoria cadastrada.
+    destroy:
+      success: Categoria deletada com sucesso.
+    update:
+      success: Categoria atualizada com sucesso.
+    create:
+      success: Categoria criada com sucesso.
+  helpers:
+    submit:
+      create: Criar %{model}
+      submit: Salvar %{model}
+      update: Atualizar %{model}
+  buttons:
+    update_category: Atualizar Categoria
+    create_category: Nova Categoria
+    delete_category: Deletar Categoria

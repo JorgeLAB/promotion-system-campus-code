@@ -12,7 +12,12 @@ class ProductCategoriesController < ApplicationController
   def create
     @product_category = ProductCategory.new(product_category_params)
 
-    product_category_save!('criada')
+    if @product_category.save
+      redirect_to @product_category, success: t('.success')
+    else
+      flash.now[:error] = @product_category.errors.full_messages
+      render :new
+    end
   end
 
   def show; end
@@ -22,13 +27,18 @@ class ProductCategoriesController < ApplicationController
   def update
     @product_category.attributes = product_category_params
 
-    product_category_save!('atualizada')
+    if @product_category.save
+      redirect_to @product_category, success: t('.success')
+    else
+      flash.now[:error] = @product_category.errors.full_messages
+      render :new
+    end
   end
 
   def destroy
 
     if @product_category.destroy
-      redirect_to product_categories_path, success: 'Categoria deletada com sucesso.'
+      redirect_to product_categories_path, success: t('.success')
     end
   end
 
@@ -42,14 +52,4 @@ class ProductCategoriesController < ApplicationController
     def load_product_category
       @product_category = ProductCategory.find(params[:id])
     end
-
-    def product_category_save!(action)
-
-      if @product_category.save
-        redirect_to @product_category, success: "Categoria #{action} com sucesso."
-      else
-        flash[:error] = @product_category.errors.full_messages
-        render :new
-      end
-  end
 end

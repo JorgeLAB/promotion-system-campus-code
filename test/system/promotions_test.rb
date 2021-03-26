@@ -112,9 +112,9 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Descrição', with: 'Promoção de Cyber Monday'
     fill_in 'Código', with: 'CYBER15'
     fill_in 'Desconto', with: '15'
-    fill_in 'Quantidade de cupons', with: '90'
+    fill_in 'Quantidade de Coupons', with: '90'
     fill_in 'Data de término', with: I18n.l(Date.today, format: '%m-%d-%Y')
-    click_on 'Criar promoção'
+    click_on 'Criar Promoção'
 
 
     assert_text 'Promoção criada com sucesso.'
@@ -131,7 +131,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     visit new_promotion_path
 
-    click_on 'Criar promoção'
+    click_on 'Criar Promoção'
 
     assert_text 'não pode ficar em branco', count: 5
   end
@@ -145,7 +145,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     fill_in 'Nome', with: 'Natal'
     fill_in 'Código', with: 'NATAL10'
-    click_on 'Criar promoção'
+    click_on 'Criar Promoção'
 
     assert_text 'deve ser único', count: 2
   end
@@ -191,7 +191,7 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Nome', with: ''
     fill_in 'Código', with: ''
     fill_in 'Desconto', with: ''
-    fill_in 'Quantidade de cupons', with: ''
+    fill_in 'Quantidade de Coupons', with: ''
     fill_in 'Data de término', with: ''
 
 

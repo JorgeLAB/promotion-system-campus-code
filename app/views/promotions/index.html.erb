@@ -1,23 +1,24 @@
 <% if @promotions.empty? %>
-  <p> Nenhuma promoção cadastrada </p>
+  <p> <%= t('.promotions_empty') %> </p>
 <% end %>
 
 <% @promotions.each do |promotion| %>
   <dl>
-    <dt>Nome:</dt>
+    <dt><%= Promotion.human_attribute_name(:name) %></dt>
     <dd><%= link_to promotion.name, promotion %></dd>
 
-    <dt>Descrição</dt>
+    <dt><%= Promotion.human_attribute_name(:description) %></dt>
     <dd><%= promotion.description %></dd>
 
-    <dt>Desconto</dt>
-    <dd><%= number_to_percentage(promotion.discount_rate, separator: ",", precision: 2) %></dd>
+    <dt><%= Promotion.human_attribute_name(:code) %></dt>
+    <dd><%= number_to_percentage promotion.discount_rate, precision: 2 %></dd>
   </dl>
-  <%= link_to "Editar Promoção", edit_promotion_path(promotion) %>
-  <%= link_to 'Deletar Promoção', promotion, method: :delete,
-      data: { confirm: 'tem certeza?' } %>
+
+  <%= link_to t('buttons.update_promotion'), edit_promotion_path(promotion) %>
+  <%= link_to t('buttons.delete_promotion'), promotion, method: :delete,
+      data: { confirm: t('messages.confirm') } %>
 
 <% end %>
 
-<%= link_to "Registrar uma promoção", new_promotion_path %>
-<%= link_to "Voltar", root_path %>
+<%= link_to t('buttons.create_promotion'), new_promotion_path %>
+<%= link_to t('buttons.back'), root_path %>
