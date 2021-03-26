@@ -22,7 +22,6 @@ Bundler.require(*Rails.groups)
 module PromotionSystem
   class Application < Rails::Application
     config.load_defaults 6.1
-
     config.time_zone = "Brasilia"
   end
 end
