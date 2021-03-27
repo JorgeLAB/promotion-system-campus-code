@@ -1,4 +1,5 @@
 class CouponsController < ApplicationController
+  before_action :authenticate_user!, only: [:disable, :enable]
   before_action :load_promotion, only: [ :disable, :enable ]
 
   def disable
