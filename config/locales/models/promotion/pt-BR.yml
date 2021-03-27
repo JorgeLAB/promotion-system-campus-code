@@ -21,8 +21,8 @@ pt-BR:
       promotions_empty: Nenhuma promoção cadastrada
     show:
       generate_coupons: Gerar coupons
-    generated_coupons:
-      success: Cupons gerados com sucesso
+    generate_coupon:
+      success: Coupons gerados com sucesso!
     destroy:
       success: Promoção deletada com sucesso.
     update:

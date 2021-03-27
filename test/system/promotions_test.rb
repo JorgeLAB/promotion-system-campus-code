@@ -100,6 +100,8 @@ class PromotionsTest < ApplicationSystemTestCase
 
     click_on 'Gerar coupons'
 
+    assert_text "Coupons gerados com sucesso!"
+
     assert_text 'NATAL10-0001'
     assert_text 'NATAL10-0100'
     assert_selector 'div#coupons_list li', count: promotion.coupon_quantity
@@ -158,6 +160,7 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
+    login_user
 
     visit new_promotion_path
 
