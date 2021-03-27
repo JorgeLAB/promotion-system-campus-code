@@ -4,7 +4,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
   include LoginMacros
 
-  test 'view promotions' do
+  test 'view promotions' do # seeing promotions corrigir para present continues
     # arrange
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
@@ -30,7 +30,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text '15,00%'
   end
 
-  test 'view promotion details' do
+  test 'view promotion details' do # seeing a promotion corrigir para present continues
     Promotion.create!(name: 'Natal', coupon_quantity: 100,
                       description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10,
@@ -106,6 +106,8 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'NATAL10-0100'
     assert_selector 'div#coupons_list li', count: promotion.coupon_quantity
 
+    # assert_match( regexp, string, [msg] ) para verificar se os code gerados correspondem ao padrão
+
   end
 
   test 'generate coupons button need hide' do
@@ -179,7 +181,9 @@ class PromotionsTest < ApplicationSystemTestCase
 
     login_user
 
-    visit edit_promotion_path promotion
+    visit promotion_path(promotion)
+
+    click_on "Atualizar Promoção"
 
     assert_selector "form input[type=text][value='Independência']"
     assert_text 'Promoção da independência.'
@@ -210,7 +214,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   )
     login_user
 
-    visit edit_promotion_path promotion.id
+    visit edit_promotion_path promotion
 
     fill_in 'Nome', with: ''
     fill_in 'Código', with: ''
@@ -222,6 +226,19 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Atualizar Promoção'
 
     assert_text 'não pode ficar em branco', count: 5
+  end
+
+  test 'cannot edit a promotion with generated coupons' do
+    promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
+                                  code: 'Free22', discount_rate: 40, coupon_quantity: 200,
+                                  expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
+                                  )
+    promotion.generated_coupons!
+    login_user
+
+    visit promotion_path(promotion)
+
+    assert_no_link 'Atualizar Promoção'
   end
 
   test 'destroy promotion' do
@@ -281,9 +298,8 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_current_path new_user_session_path
   end
-
 end
 
 
-# Testaremos apenas rotas get já que são os únicos método permitidos para o uso de visit. Aqui vc não fará para POST, nem para PATCH, nem para DELETE ou PUT somente GET.
+# Testaremos apenas rotas get já que são os únicos métodos permitidos para o uso de visit. Aqui vc não fará para POST, nem para PATCH, nem para DELETE ou PUT somente GET.
 # Para isso devemos realizar teste de integração.

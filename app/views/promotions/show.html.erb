@@ -19,9 +19,9 @@
 </dl>
 
 <% if @promotion.coupons.empty? %>
+  <%= link_to t('buttons.update_promotion'), edit_promotion_path(@promotion) %>
   <%= link_to t('.generate_coupons'), generate_coupon_promotion_path(@promotion), method: :post %>
 <% end %>
-
 
 <div id="coupons_list">
   <ul>
