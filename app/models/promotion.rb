@@ -24,6 +24,5 @@ class Promotion < ApplicationRecord
   def coupons?
     coupons.any?
   end
-
 end
 

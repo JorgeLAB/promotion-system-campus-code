@@ -1,4 +1,5 @@
 class ProductCategoriesController < ApplicationController
+  before_action :authenticate_user!, only: [:index, :show, :edit, :new]
   before_action :load_product_category, only: [:show, :edit, :update, :destroy]
 
   def index

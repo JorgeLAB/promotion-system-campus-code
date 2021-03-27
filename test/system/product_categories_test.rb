@@ -4,7 +4,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
   include LoginMacros
 
-  test 'view product_categories' do
+  test 'viewing product_categories index' do
     ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
     ProductCategory.create!( name: 'Produto Natalino', code: 'NATALINO' )
 
@@ -21,9 +21,17 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'no product_categories available' do
+    login_user
+
     visit product_categories_path
 
     assert_text 'Nenhuma categoria cadastrada.'
+  end
+
+  test 'cannot view product_categories index without login' do
+    visit product_categories_path
+
+    assert_current_path new_user_session_path
   end
 
   test 'view product_categories has a back button home' do
@@ -36,6 +44,8 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'view product_categories details' do
+    login_user
+
     ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
 
     visit product_categories_path
@@ -47,8 +57,9 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'view product_category details has a button to back home' do
-    ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
     login_user
+
+    ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
 
     visit root_path
 
@@ -58,7 +69,17 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     assert_link 'Voltar', href: "/product_categories"
   end
 
-  test 'view create a product_category' do
+  test 'cannot view product_category details without login' do
+    category = ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
+
+    visit product_category_path(category)
+
+    assert_current_path new_user_session_path
+  end
+
+  test 'viewing create a product_category' do
+    login_user
+
     visit product_categories_path
 
     click_on 'Nova Categoria'
@@ -72,7 +93,15 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     assert_text 'CURSO'
   end
 
+  test 'cannot view new form without login' do
+    visit new_product_category_path
+
+    assert_current_path new_user_session_path
+  end
+
   test 'create and attributes cannot be blank' do
+    login_user
+
     visit new_product_category_path
 
     click_on 'Criar Categoria'
@@ -81,6 +110,8 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'code and name product_category must be unique' do
+    login_user
+
     ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
 
     visit new_product_category_path
@@ -93,6 +124,8 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'view product_categories must has a button category edit' do
+    login_user
+
     product_curso = ProductCategory.create!(name: 'Produto Curso', code: 'CURSO')
 
     visit product_categories_path
@@ -101,6 +134,8 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'edit product_category' do
+    login_user
+
     product_category = ProductCategory.create!(name: 'Produto Curso', code: 'CURSO')
 
     visit edit_product_category_path product_category.id
@@ -119,9 +154,11 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'edit product_category attributes cannot be blank' do
+    login_user
+
     product_category = ProductCategory.create!(name: 'Produto Curso', code: 'CURSO')
 
-    visit edit_product_category_path product_category.id
+    visit edit_product_category_path(product_category)
 
     fill_in 'Nome', with: ''
     fill_in 'Código', with: ''
@@ -131,7 +168,17 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     assert_text 'não pode ficar em branco', count: 2
   end
 
+  test 'cannot view edit form without login' do
+    product_category = ProductCategory.create!(name: 'Produto Curso', code: 'CURSO')
+
+    visit edit_product_category_path(product_category)
+
+    assert_current_path new_user_session_path
+  end
+
   test 'destroy product_category' do
+    login_user
+
     product_curso = ProductCategory.create!(name: 'Produto Curso', code: 'CURSO')
 
     visit product_categories_path
@@ -145,6 +192,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'should destroy one product_category and not destroy others' do
+    login_user
 
     ProductCategory.create!(name: 'Produto Curso', code: 'CURSO')
     ProductCategory.create!(name: 'Produto Carnaval', code: 'CARNAVAL')
@@ -157,8 +205,6 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
     assert_text 'Categoria deletada com sucesso.'
 
-    assert_text 'Carnaval'
     assert_text 'CARNAVAL'
   end
-
 end
