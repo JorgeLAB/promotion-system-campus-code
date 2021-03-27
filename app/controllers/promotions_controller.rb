@@ -1,5 +1,5 @@
 class PromotionsController < ApplicationController
-  before_action :authenticate_user!, only: [ :index, :show, :create, :generate_coupon ]
+  before_action :authenticate_user!
   before_action :load_promotion, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -26,6 +26,11 @@ class PromotionsController < ApplicationController
   def edit; end
 
   def update
+
+    if @promotion.coupons?
+      return redirect_to @promotion, notice: "Promoção não pode ser atualizada", status: :not_modified
+    end
+
     @promotion.attributes = promotion_params
 
     if @promotion.save

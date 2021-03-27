@@ -1,5 +1,5 @@
 class Promotion < ApplicationRecord
-  has_many :coupons
+  has_many :coupons, dependent: :destroy
 
   validates :name, presence: true,
                    uniqueness: true
@@ -24,6 +24,5 @@ class Promotion < ApplicationRecord
   def coupons?
     coupons.any?
   end
-
 end
 
