@@ -34,11 +34,12 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_current_path root_path
     assert_no_link 'Cadastrar'
     assert_link 'Sair'
+
+    # flunk( "Não finalizou" ) # esse assert é empregado em caso de não finalização de teste
   end
 end
 
 # TODO: não logar e ir para login?
-# TODO: confirmar a senha?
 # TODO: confirmar a conta?
 # TODO: mandar email
 # TODO: Validar qualidade da senha?
