@@ -2,9 +2,13 @@ require 'application_system_test_case'
 
 class ProductCategoriesTest < ApplicationSystemTestCase
 
+  include LoginMacros
+
   test 'view product_categories' do
     ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
     ProductCategory.create!( name: 'Produto Natalino', code: 'NATALINO' )
+
+    login_user
 
     visit root_path
     click_on 'Categorias'
@@ -23,6 +27,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'view product_categories has a back button home' do
+    login_user
 
     visit root_path
 
@@ -43,6 +48,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
   test 'view product_category details has a button to back home' do
     ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
+    login_user
 
     visit root_path
 

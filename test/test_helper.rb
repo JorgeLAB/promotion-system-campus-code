@@ -8,6 +8,8 @@ class ActiveSupport::TestCase
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   # fixtures :all
+  include Warden::Test::Helpers
 
+  Dir[Rails.root.join('test/support/**/*.rb')].each { |f| require f }
   # Add more helper methods to be used by all tests here...
 end
