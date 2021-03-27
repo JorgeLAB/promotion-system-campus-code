@@ -1,4 +1,5 @@
 class PromotionsController < ApplicationController
+  before_action :authenticate_user!, only: [ :index, :show, :create, :generate_coupon ]
   before_action :load_promotion, only: [ :show, :edit, :update, :destroy ]
 
   def index

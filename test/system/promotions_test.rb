@@ -40,6 +40,7 @@ class PromotionsTest < ApplicationSystemTestCase
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
                       expiration_date: '22/12/2033')
+    login_user
 
     visit promotions_path
 
@@ -93,6 +94,8 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10,
                                   expiration_date: '22/12/2033')
 
+    login_user
+
     visit promotion_path promotion
 
     click_on 'Gerar coupons'
@@ -108,6 +111,7 @@ class PromotionsTest < ApplicationSystemTestCase
                               description: 'Promoção de Natal',
                               code: 'NATAL10', discount_rate: 10,
                               expiration_date: '22/12/2033')
+    login_user
 
     visit promotion_path promotion
 
@@ -118,6 +122,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create promotion' do
+    login_user
+
     visit new_promotion_path
 
     fill_in 'Nome', with: 'Cyber Monday'
@@ -127,7 +133,6 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Quantidade de Coupons', with: '90'
     fill_in 'Data de término', with: I18n.l(Date.today, format: '%m-%d-%Y')
     click_on 'Criar Promoção'
-
 
     assert_text 'Promoção criada com sucesso.'
     assert_text 'Cyber Monday'
@@ -140,6 +145,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create and attributes cannot be blank' do
+    login_user
 
     visit new_promotion_path
 
@@ -167,6 +173,8 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'Free22', discount_rate: 40, coupon_quantity: 200,
                                   expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
                                   )
+
+    login_user
 
     visit edit_promotion_path promotion
 
@@ -197,6 +205,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'Free22', discount_rate: 40, coupon_quantity: 200,
                                   expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
                                   )
+    login_user
 
     visit edit_promotion_path promotion.id
 
@@ -216,6 +225,8 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
+    login_user
+
     visit promotions_path
 
     accept_confirm do
@@ -236,6 +247,8 @@ class PromotionsTest < ApplicationSystemTestCase
                       code: 'CYBER15', discount_rate: 15,
                       expiration_date: '22/12/2033')
 
+    login_user
+
     visit promotions_path
 
     accept_confirm do
@@ -249,9 +262,25 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text '15,00%'
   end
 
-  test 'do not view promotion link without login' do
+  test 'does not show index promotion link without login' do
     visit root_path
 
     assert_no_link 'Promoções'
   end
+
+  test 'does not show promotion details without login' do
+    promotion = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                  description: 'Promoção de Cyber Monday',
+                  code: 'CYBER15', discount_rate: 15,
+                  expiration_date: '22/12/2033')
+
+    visit promotion_path(promotion)
+
+    assert_current_path new_user_session_path
+  end
+
 end
+
+
+# Testaremos apenas rotas get já que são os únicos método permitidos para o uso de visit. Aqui vc não fará para POST, nem para PATCH, nem para DELETE ou PUT somente GET.
+# Para isso devemos realizar teste de integração.
