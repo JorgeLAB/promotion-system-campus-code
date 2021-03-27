@@ -47,6 +47,7 @@ class PromotionsController < ApplicationController
     @promotion = Promotion.find(params[:id])
     @promotion.generated_coupons!
 
+    flash.now[:success] = t('.success')
     render :show
   end
 
@@ -62,10 +63,6 @@ class PromotionsController < ApplicationController
 
     def load_promotion
       @promotion = Promotion.find(params[:id])
-    end
-
-    def defined_model
-      @model = Promotion.model_name.human
     end
 end
 

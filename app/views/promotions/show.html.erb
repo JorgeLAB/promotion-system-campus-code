@@ -26,7 +26,14 @@
 <div id="coupons_list">
   <ul>
     <% @promotion.coupons.each do |coupon| %>
-      <li><%= coupon.code %></li>
+      <li id="coupon-<%= coupon.code.parameterize %>">
+        <%= "#{coupon.code} #{'(desabilitado)' if coupon.disabled?}" %>
+        <% if coupon.active? %>
+          <span> <%= link_to 'Desabilitar', disable_coupon_path(coupon), method: :post %> </span>
+        <% else %>
+          <span> <%= link_to 'Ativar', "#", method: :post %> </span>
+        <% end %>
+      </li>
     <% end %>
   </ul>
 </div>
