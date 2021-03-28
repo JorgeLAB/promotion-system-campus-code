@@ -2,6 +2,20 @@
 pt-BR:
   activerecord:
     models:
-      coupon: Coupon
+      coupon:
+        one: Coupon
     attributes:
       coupon:
+        code: Código
+      coupon/status:
+        disabled: desabilitado
+        active: habilitado
+  coupons:
+    disable:
+      success: "Coupom desabilitado com sucesso!"
+    enable:
+      success: "Coupom habilitado com sucesso!"
+  buttons:
+    disable_status: Desabilitar
+    active_status: Habilitar
+
