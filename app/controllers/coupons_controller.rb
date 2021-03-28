@@ -4,12 +4,12 @@ class CouponsController < ApplicationController
 
   def disable
     @coupon.disabled!
-    redirect_to @coupon.promotion, success: "Coupom desabilitado com sucesso!"
+    redirect_to @coupon.promotion, success: t('.success')
   end
 
   def enable
     @coupon.active!
-    redirect_to @coupon.promotion, success: "Coupom habilitado com sucesso!"
+    redirect_to @coupon.promotion, success: t('.success')
   end
 
   private

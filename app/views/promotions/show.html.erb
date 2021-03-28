@@ -27,12 +27,12 @@
   <ul>
     <% @promotion.coupons.each do |coupon| %>
       <li id="coupon-<%= coupon.code.parameterize %>">
-        <%= "#{coupon.code} #{coupon.disabled? ? '(desabilitado)' : '(habilitado)'}" %>
+        <%= "#{coupon.code} (#{ Coupon.human_attribute_name("status.#{coupon.status}") })" %>
 
         <% if coupon.active? %>
-          <span> <%= link_to 'Desabilitar', disable_coupon_path(coupon), method: :post %> </span>
+          <span> <%= link_to t('buttons.disable_status'), disable_coupon_path(coupon), method: :post %> </span>
         <% else %>
-          <span> <%= link_to 'Habilitar', enable_coupon_path(coupon), method: :post %> </span>
+          <span> <%= link_to t('buttons.active_status'), enable_coupon_path(coupon), method: :post %> </span>
         <% end %>
       </li>
     <% end %>
