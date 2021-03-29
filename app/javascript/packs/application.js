@@ -9,4 +9,6 @@ import 'jquery'
 import 'popper.js'
 import 'bootstrap'
 import "../scss/application"
-import "../search_promotion"
+
+/* TODO: Realizar busca via ajax depois */
+// import "../search_promotion"
