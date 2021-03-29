@@ -4,3 +4,7 @@ pt-BR:
     back: Voltar
   messages:
     confirm: Tem certeza?
+  placeholder:
+    type_email: Digíte seu email
+    type_password: Digíte sua senha
+    type_password_confirmation: Confirme sua senha

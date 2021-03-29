@@ -8,7 +8,6 @@ window.addEventListener("load", () => {
       data: {'name': name},
       dataType: 'json',
       success: function (response) {
-
       }
     })
   }
