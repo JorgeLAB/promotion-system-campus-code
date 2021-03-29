@@ -68,7 +68,8 @@
   font-weight: bold;
 }
 
-#user_registration input {
+#user_registration input,
+#user_session input {
 
   &:focus {
     outline: none;

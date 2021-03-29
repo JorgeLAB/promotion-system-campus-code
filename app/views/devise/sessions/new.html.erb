@@ -1,26 +1,60 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email, 'Email' %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<header class="header_auth text-center">
+  <div class="row">
+    <h1 class="col-12 description-page mt-1">
+      <%= t('titles.sign_in_title') %>
+    </h1>
   </div>
+</header>
 
-  <div class="field">
-    <%= f.label :password, 'Senha' %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+<main id="user_session" >
+  <div class="container">
+    <div class="d-flex justify-content-center col-sm-12 col-md-10 col-lg">
+      <div class="col-lg-5">
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+          <div class="form-row form-group w-100">
+            <%= f.label :email %>
+            <%= f.email_field :email,
+                               autofocus: true,
+                               autocomplete: "email",
+                               class: "rounded-bottom border-bottom-2 form-control",
+                               placeholder: t('placeholder.type_email')
+            %>
+          </div>
+
+          <div class="form-row form-group w-100">
+            <%= f.label :password %>
+            <%= f.password_field :password,
+                                  autocomplete: "current-password",
+                                  class: "rounded-bottom border-bottom-5 form-control",
+                                  placeholder: t('placeholder.type_password')
+            %>
+          </div>
+
+          <div class='form-row'>
+            <% if devise_mapping.rememberable? %>
+              <div class="form-group form-check">
+                <%= f.check_box :remember_me, class: "form-check-input" %>
+                <%= f.label :remember_me, class: "form-check-label" %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="form-row">
+            <%= f.submit "Confirmar", class: "text-uppercase btn-lg col-12 button-submit-auth-entry" %>
+          </div>
+
+          <div class="form-row">
+            <div class="text-center mt-2">
+              <p class="fs-6 lh-sm">
+                <%= t('subtitles.sign_up_ask') %>
+                <%= link_to t('links.sign_up'), "/users/sign_up", class: "text-uppercase submit_auth" %></p>
+            </div>
+          </div>
+
+        <% end %>
+      </div>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Login" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</main>

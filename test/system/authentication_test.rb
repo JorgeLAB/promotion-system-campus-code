@@ -30,15 +30,28 @@ class AuthenticationTest < ApplicationSystemTestCase
     user = User.create!(email: 'mclovin@iugu.com.br', password: '12345678')
 
     visit root_path
-    click_on 'Entrar'
-    fill_in 'Email', with: user.email
-    fill_in 'Senha', with: user.password
+
     click_on 'Login'
 
+    assert_text 'Entrar'
+
+    fill_in 'Email', with: user.email
+    fill_in 'Senha', with: user.password
+
+    assert_text 'Não possui cadastro?'
+    assert_link 'cadastrar-se', href: "/users/sign_up"
+
+    check 'Lembre-me'
+    assert_selector 'input[type=checkbox]:checked'
+
+    click_on 'Confirmar'
+
     assert_text 'Login efetuado com sucesso!'
+
     assert_text user.email
     assert_current_path root_path
     assert_no_link 'Cadastrar'
+    assert_no_link 'Login'
     assert_link 'Sair'
   end
 end
