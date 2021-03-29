@@ -57,7 +57,8 @@ class PromotionsController < ApplicationController
   end
 
   def search
-
+    @promotions = Promotion.search( params[:query] )
+    render :index
   end
 
 	private

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
 	resources :promotions do
     post 'generate_coupon', on: :member
-    post 'search', on: :collection
+    get 'search', on: :collection
   end
 
   resources :coupons, only: [] do

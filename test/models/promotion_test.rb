@@ -54,19 +54,58 @@ class PromotionTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should search for a promotion by name' do
-    promotion =  Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 1,
-                                   expiration_date: '22/12/2033')
+  test '.search should return by exact name' do
+    promotion_natal =  Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                         code: 'NATAL10', discount_rate: 10,
+                                         coupon_quantity: 1, expiration_date: '22/12/2033')
 
-    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
-                      description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033')
+    promotion_cyber = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                                        description: 'Promoção de Cyber Monday',
+                                        code: 'CYBER15', discount_rate: 15,
+                                        expiration_date: '22/12/2033')
 
+    result = Promotion.search('Natal')
 
+    assert_includes result, promotion_natal
+    refute_includes result, promotion_cyber
+  end
+
+  test '.search should to return a partial search for a name' do
+    promotion_natal =  Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                         code: 'NATAL10', discount_rate: 10,
+                                         coupon_quantity: 1, expiration_date: '22/12/2033')
+
+    promotion_cyber = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                                        description: 'Promoção de Cyber Monday',
+                                        code: 'CYBER20', discount_rate: 15,
+                                        expiration_date: '22/12/2033')
+
+    promotion_cyber_sunday = Promotion.create!(name: 'Cyber Sunday', coupon_quantity: 90,
+                                               description: 'Promoção de Cyber Monday',
+                                               code: 'CYBER15', discount_rate: 15,
+                                               expiration_date: '22/12/2033')
+
+    result = Promotion.search('Cyber')
+
+    assert_includes result, promotion_cyber
+    assert_includes result, promotion_cyber_sunday
+    refute_includes result, promotion_natal
+  end
+
+  test '.search finds nothing' do
+    promotion_natal =  Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                         code: 'NATAL10', discount_rate: 10,
+                                         coupon_quantity: 1, expiration_date: '22/12/2033')
+
+    promotion_cyber = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                                        description: 'Promoção de Cyber Monday',
+                                        code: 'CYBER15', discount_rate: 15,
+                                        expiration_date: '22/12/2033')
+
+    result = Promotion.search('Carnaval')
+
+    assert_empty result
   end
 end
 
 
-# TODO: O que penso é que não temos como fazer a criação em nosso sistema de um coupon por fora
