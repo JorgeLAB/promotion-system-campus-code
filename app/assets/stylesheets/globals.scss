@@ -1,0 +1,16 @@
+/* Fonts for title */
+// font-family: 'Oxygen', sans-serif;
+// font-family: 'Roboto Slab', serif;
+// font-family: 'Ubuntu', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@700&family=Roboto+Slab&family=Ubuntu:wght@300&display=swap');
+/* Global colors */
+:root {
+    --color-primary: #8BCCBD;
+    --color-primary-translucent: rgba(102,179, 186, 0.3);
+    --color-danger-translucent: rgba(227,23,10, 0.3);
+    --gray-inputs-legends: #666;
+    --gray-backgroud-color-lines: #E5E5E5;
+    --text-color: #283D3B;
+    --color-purple-dark: #260C1A;
+    --color-filds-input: rgba(102, 179,186, 0.6);
+}

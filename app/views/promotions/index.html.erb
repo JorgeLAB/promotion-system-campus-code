@@ -2,23 +2,27 @@
   <p> <%= t('.promotions_empty') %> </p>
 <% end %>
 
-<% @promotions.each do |promotion| %>
-  <dl>
-    <dt><%= Promotion.human_attribute_name(:name) %></dt>
-    <dd><%= link_to promotion.name, promotion %></dd>
+<%= render 'search' %>
 
-    <dt><%= Promotion.human_attribute_name(:description) %></dt>
-    <dd><%= promotion.description %></dd>
+<div id="promotion_list" >
+  <% @promotions.each do |promotion| %>
+    <dl>
+      <dt><%= Promotion.human_attribute_name(:name) %></dt>
+      <dd><%= link_to promotion.name, promotion %></dd>
 
-    <dt><%= Promotion.human_attribute_name(:code) %></dt>
-    <dd><%= number_to_percentage promotion.discount_rate, precision: 2 %></dd>
-  </dl>
+      <dt><%= Promotion.human_attribute_name(:description) %></dt>
+      <dd><%= promotion.description %></dd>
 
-  <%= link_to t('buttons.update_promotion'), edit_promotion_path(promotion) %>
-  <%= link_to t('buttons.delete_promotion'), promotion, method: :delete,
-      data: { confirm: t('messages.confirm') } %>
+      <dt><%= Promotion.human_attribute_name(:code) %></dt>
+      <dd><%= number_to_percentage promotion.discount_rate, precision: 2 %></dd>
+    </dl>
 
-<% end %>
+    <%= link_to t('buttons.update_promotion'), edit_promotion_path(promotion) %>
+    <%= link_to t('buttons.delete_promotion'), promotion, method: :delete,
+        data: { confirm: t('messages.confirm') } %>
+
+  <% end %>
+</div>
 
 <%= link_to t('buttons.create_promotion'), new_promotion_path %>
 <%= link_to t('buttons.back'), root_path %>

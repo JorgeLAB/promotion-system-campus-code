@@ -11,12 +11,6 @@
  </head>
 
   <body>
-    <%= render 'shared/header' %>
-
-    <% flash.each do |attr, mensagem| %>
-      <%= content_tag :div, mensagem %>
-    <% end %>
-
     <%= yield %>
   </body>
 </html>

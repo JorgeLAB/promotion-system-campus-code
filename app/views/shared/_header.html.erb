@@ -1,17 +1,27 @@
-<header>
-  <nav>
-    <ul>
-      <% if user_signed_in? %>
-        <li><%= current_user.email %></li>
-        <li><%= link_to  'Promoções', promotions_path  %></li>
-        <li><%= link_to 'Categorias', product_categories_path %></li>
-        <li><%= link_to 'Sair', '#' %></li>
-      <% else %>
-        <li><%= link_to 'Cadastrar', new_user_registration_path %></li>
-        <li><%= link_to 'Entrar', new_user_session_path %></li>
-      <% end %>
-    </ul>
+<header class="mb-5">
+  <nav class="navbar navbar-expand-lg navbar-light border-bottom border-dark">
+    <div class="container-fluid">
+      <%= link_to 'Projetos', root_path %>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse ml-5" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <%= link_to 'Home', root_path, class: "nav-link" %>
+          <% if user_signed_in? %>
+            <%= link_to 'Promoções', promotions_path, class: "nav-link" %>
+            <%= link_to 'Categorias', product_categories_path, class: "nav-link" %>
+            <%= link_to current_user.email, '#', class: "nav-link" %>
+            <%= link_to 'Sair', destroy_user_session_path, method: :delete, class: "nav-link" %>
+          <% else %>
+            <%= link_to 'Cadastrar', new_user_registration_path, class: "nav-link" %>
+            <%= link_to 'Login', new_user_session_path, class: "nav-link" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </nav>
 </header>
-
 
