@@ -53,21 +53,21 @@ class PromotionsIndexTest < ApplicationSystemTestCase
     assert_button "Pesquisar"
   end
 
-  test "can search a promotion with your exact name" do
+  test "should search with your exact name" do
     login_user
 
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
 
-    promotion = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
-                  description: 'Promoção de Cyber Monday',
-                  code: 'CYBER15', discount_rate: 15,
-                  expiration_date: '22/12/2033')
+    promotion_cyber = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                                        description: 'Promoção de Cyber Monday',
+                                        code: 'CYBER15', discount_rate: 15,
+                                        expiration_date: '22/12/2033')
 
     visit promotions_path
 
-    fill_in "", with: promotion.name
+    fill_in "", with: promotion_cyber.name
 
     click_on "Pesquisar"
 
@@ -81,6 +81,77 @@ class PromotionsIndexTest < ApplicationSystemTestCase
         assert_link 'Atualizar Promoção', href: edit_promotion_path(promotion_cyber)
         assert_text 'Deletar Promoção'
       end
+    end
+  end
+
+  test "should search with partial name" do
+    login_user
+
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+    promotion_sunday = Promotion.create!(name: 'Cyber Sunday', coupon_quantity: 90,
+                                         description: 'Promoção de Cyber Sunday',
+                                         code: 'CYBER10', discount_rate: 15,
+                                         expiration_date: '22/12/2033')
+
+    promotion_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                                         description: 'Promoção de Cyber Monday',
+                                         code: 'CYBER15', discount_rate: 15,
+                                         expiration_date: '22/12/2033')
+    visit promotions_path
+
+
+    fill_in "", with: "Cyber"
+
+    click_on "Pesquisar"
+
+    within 'div#list_promotions table tbody' do
+      assert_selector "tr", count: 2
+
+      within 'tr#promotion_1' do
+        assert_text 'Cyber Sunday'
+        assert_text 'Promoção de Cyber Sunday'
+        assert_text '15,00%'
+        assert_link 'Atualizar Promoção', href: edit_promotion_path(promotion_sunday)
+        assert_text 'Deletar Promoção'
+      end
+
+      within 'tr#promotion_2' do
+        assert_text 'Cyber Monday'
+        assert_text 'Promoção de Cyber Monday'
+        assert_text '15,00%'
+        assert_link 'Atualizar Promoção', href: edit_promotion_path(promotion_monday)
+        assert_text 'Deletar Promoção'
+      end
+    end
+  end
+
+  test "should search find nothing" do
+    login_user
+
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+    promotion_sunday = Promotion.create!(name: 'Cyber Sunday', coupon_quantity: 90,
+                                         description: 'Promoção de Cyber Sunday',
+                                         code: 'CYBER10', discount_rate: 15,
+                                         expiration_date: '22/12/2033')
+
+    promotion_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                                         description: 'Promoção de Cyber Monday',
+                                         code: 'CYBER15', discount_rate: 15,
+                                         expiration_date: '22/12/2033')
+    visit promotions_path
+
+    fill_in "", with: "Carnaval"
+
+    click_on "Pesquisar"
+
+    within 'div#list_promotions table tbody' do
+      assert_selector "tr", count: 0
     end
   end
 end

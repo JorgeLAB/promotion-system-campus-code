@@ -1,7 +1,7 @@
 <div class="mb-5">
-  <%= form_with(url: search_promotions_path, id: "search_promotion", method: :post, local: false) do |f| %>
-    <%= f.label :name, "Procurar" %>
-    <%= f.search_field :name , placeholder: "Pesquisar Promoção", :disabled => false%>
+  <%= form_with(url: search_promotions_path, id: "search_promotion", method: :get) do |f| %>
+    <%= f.label :query, "Procurar" %>
+    <%= f.search_field :query , placeholder: "Pesquisar Promoção" %>
 
     <%= f.submit "Pesquisar" %>
   <% end %>

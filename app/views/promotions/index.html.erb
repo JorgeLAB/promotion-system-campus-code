@@ -24,7 +24,7 @@
     <tbody>
       <% @promotions.each.with_index(1) do |promotion, index| %>
         <tr id="promotion_<%= index %>">
-          <td> <%= promotion.name %> </td>
+          <td> <%= link_to promotion.name, promotion_path(promotion) %> </td>
           <td> <%= promotion.description %> </td>
           <td> <%= number_to_percentage(promotion.discount_rate, precision: 2) %> </td>
           <td> <%= link_to t('buttons.update_promotion'), edit_promotion_path(promotion) %> </td>
@@ -32,7 +32,7 @@
             <%= link_to t('buttons.delete_promotion'),
                         promotion, method: :delete,
                         data: { confirm: t('messages.confirm') } %>
-            </td>
+          </td>
         </tr>
       <% end %>
     </tbody>
