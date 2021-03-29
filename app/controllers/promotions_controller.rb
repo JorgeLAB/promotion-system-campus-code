@@ -37,7 +37,7 @@ class PromotionsController < ApplicationController
       return redirect_to @promotion, success: t('.success')
     else
       flash.now[:error] = @promotion.errors.full_messages
-      render :new
+      render :edit
     end
   end
 
@@ -54,6 +54,10 @@ class PromotionsController < ApplicationController
 
     flash.now[:success] = t('.success')
     render :show
+  end
+
+  def search
+
   end
 
 	private

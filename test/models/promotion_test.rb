@@ -53,6 +53,19 @@ class PromotionTest < ActiveSupport::TestCase
       promotion.generated_coupons!
     end
   end
+
+  test 'should search for a promotion by name' do
+    promotion =  Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 1,
+                                   expiration_date: '22/12/2033')
+
+    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                      description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15', discount_rate: 15,
+                      expiration_date: '22/12/2033')
+
+
+  end
 end
 
 

@@ -107,7 +107,6 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_selector 'div#coupons_list li', count: promotion.coupon_quantity
 
     # assert_match( regexp, string, [msg] ) para verificar se os code gerados correspondem ao padrão
-
   end
 
   test 'generate coupons button need hide' do
@@ -122,7 +121,6 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Gerar coupons'
 
     assert_no_link 'Gerar coupons'
-
   end
 
   test 'create promotion' do
@@ -258,7 +256,6 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy one promotion and not destroy others' do
-
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
@@ -298,8 +295,45 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_current_path new_user_session_path
   end
-end
 
+  test 'should search field in the index promotion' do
+    login_user
+
+    visit promotions_path
+
+    assert_selector "form input[type=search][placeholder='Pesquisar Promoção']"
+
+    assert_button "Pesquisar"
+  end
+
+  test "can search a promotion with your exact name" do
+    login_user
+
+    promotion = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                  description: 'Promoção de Cyber Monday',
+                  code: 'CYBER15', discount_rate: 15,
+                  expiration_date: '22/12/2033')
+
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+
+    visit promotions_path
+
+    fill_in "", with: promotion.name
+
+    click_on "Pesquisar"
+
+    within "div#promotion_list" do
+      assert_link 'Cyber Monday'
+      assert_text 'Promoção de Cyber Monday'
+      assert_text "15,00%"
+    end
+
+    assert_selector "dl", count: 1
+  end
+end
 
 # Testaremos apenas rotas get já que são os únicos métodos permitidos para o uso de visit. Aqui vc não fará para POST, nem para PATCH, nem para DELETE ou PUT somente GET.
 # Para isso devemos realizar teste de integração.
