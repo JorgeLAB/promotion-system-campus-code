@@ -20,8 +20,5 @@ pt-BR:
   links:
     sign_in: Entre
     sign_up: cadastrar-se
-  helpers:
-    submit:
-      create: Cadastrar
 
 
