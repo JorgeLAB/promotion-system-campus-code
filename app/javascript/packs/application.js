@@ -5,5 +5,8 @@ import "channels"
 Rails.start()
 Turbolinks.start()
 
-import "bootstrap";
+import 'jquery'
+import 'popper.js'
+import 'bootstrap'
+import "../scss/application"
 import "../search_promotion"

@@ -4,6 +4,12 @@ class AuthenticationTest < ApplicationSystemTestCase
   test 'user sign_up' do
     visit root_path
     click_on 'Cadastrar'
+
+    assert_no_link 'Cadastrar'
+    assert_text 'Criar sua conta'
+    assert_text 'Já tem uma conta?'
+    assert_link 'Entre', href: '/users/sign_in'
+
     fill_in 'Email', with: 'mclovin@iugu.com.br'
     fill_in 'Senha', with: '12345678'
     fill_in 'Confirmar senha', with: '12345678'
@@ -34,8 +40,6 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_current_path root_path
     assert_no_link 'Cadastrar'
     assert_link 'Sair'
-
-    # flunk( "Não finalizou" ) # esse assert é empregado em caso de não finalização de teste
   end
 end
 

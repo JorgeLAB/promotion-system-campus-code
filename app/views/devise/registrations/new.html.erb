@@ -1,29 +1,61 @@
-<h2>Sign up</h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<header class="header_auth text-center">
+  <div class="row">
+    <h1 class="col-12 description-page mt-1">
+      <%= t('titles.create_title') %>
+    </h1>
   </div>
+</header>
 
-  <div class="field">
-    <%= f.label :password, "Senha" %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+<main id="user_registration" >
+  <div class="container">
+    <div class="d-flex justify-content-center col-sm-12 col-md-10 col-lg">
+      <div class="col-lg-5">
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+
+          <div class="form-row form-group w-100">
+            <%= f.label :email %>
+            <%= f.email_field :email,
+                               autofocus: true,
+                               autocomplete: "email",
+                               class: "rounded-bottom border-bottom-2 form-control",
+                               placeholder: t('placeholder.type_email')
+            %>
+          </div>
+
+          <div class="form-row form-group w-100">
+            <%= f.label :password %>
+            <%= f.password_field :password,
+                                  autocomplete: "current-password",
+                                  class: "rounded-bottom border-bottom-5 form-control",
+                                  placeholder: t('placeholder.type_password')
+            %>
+          </div>
+
+          <div class="form-row form-group w-100">
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation,
+                                  autocomplete: "current-password",
+                                  class: "rounded-bottom border-bottom-5 form-control",
+                                  placeholder:  t('placeholder.type_password_confirmation')
+            %>
+          </div>
+
+          <div class="form-row">
+            <%= f.submit class: "text-uppercase btn-lg col-12 button-submit-auth-entry" %>
+          </div>
+
+          <div class="form-row">
+            <div class="text-center mt-2">
+              <p class="fs-6 lh-sm">
+                <%= t('titles.sign_in_ask') %>
+                <%= link_to t('links.sign_in'), "/users/sign_in", class: "text-uppercase submit_auth" %>
+              </p>
+            </div>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirmar senha" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Cadastrar" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</main>
