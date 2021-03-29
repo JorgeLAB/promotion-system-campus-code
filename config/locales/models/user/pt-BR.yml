@@ -1,0 +1,22 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      user:
+        one: Usuários
+        other: Usuários
+    attributes:
+      user:
+        email: Email
+        password: Senha
+        password_confirmation: Confirmar senha
+  titles:
+    create_title: Criar sua conta
+    sign_in_ask: Já tem uma conta?
+  links:
+    sign_in: Entre
+  helpers:
+    submit:
+      create: Cadastrar
+
+
