@@ -1,6 +1,9 @@
 require 'application_system_test_case'
 
 class AuthenticationTest < ApplicationSystemTestCase
+
+  include LoginMacros
+
   test 'user sign_up' do
     visit root_path
     click_on 'Cadastrar'
@@ -54,6 +57,20 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_no_link 'Login'
     assert_link 'Sair'
   end
+
+  test 'user sign_out' do
+
+    login_user
+
+    visit promotions_path
+    assert_link 'Sair', href: destroy_user_session_path
+    click_on 'Sair'
+
+    assert_current_path root_path
+    assert_link 'Cadastrar'
+    assert_link 'Login'
+    assert_no_link 'Sair'
+  end
 end
 
 # TODO: não logar e ir para login?
@@ -61,7 +78,6 @@ end
 # TODO: mandar email
 # TODO: Validar qualidade da senha?
 # TODO: captcha não sou um robô
-# TODO: teste de sair
 # TODO: verificar os errors em cadastrar
 # TODO: teste de falha ao logar e ao se cadastrar
 # TODO: teste de recuperar senha
