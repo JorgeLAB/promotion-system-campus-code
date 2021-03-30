@@ -110,6 +110,21 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_link 'Sair'
   end
 
+  test 'user can not sign_in with fields blank' do
+    user = User.create!(email: 'mclovin@iugu.com.br', password: '12345678')
+
+    visit new_user_session_path
+
+    fill_in 'Email', with: ''
+    fill_in 'Senha', with: ''
+
+    click_on 'Confirmar'
+
+    flunk('Esse teste não está renderizando os erros por meio do devise')
+    # assert_text 'Email não pode ficar em branco'
+    # assert_text 'Senha não pode ficar em branco'
+  end
+
   test 'user sign_out' do
 
     login_user

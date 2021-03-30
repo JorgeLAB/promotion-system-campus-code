@@ -13,6 +13,10 @@
         <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
           <%= render "devise/shared/error_messages", resource: resource %>
 
+          <% flash.each do |attr, mensagem| %>
+            <%= content_tag :div, mensagem %>
+          <% end %>
+
           <div class="form-row form-group w-100">
             <%= f.label :email %>
             <%= f.email_field :email,
@@ -61,7 +65,6 @@
               </p>
             </div>
           </div>
-
         <% end %>
       </div>
     </div>
