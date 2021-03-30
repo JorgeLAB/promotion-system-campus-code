@@ -1,0 +1,6 @@
+---
+pt-BR:
+  activerecord:
+    errors:
+      messages:
+        email: possui domínio incorreto, utilize @iugu.com.br
