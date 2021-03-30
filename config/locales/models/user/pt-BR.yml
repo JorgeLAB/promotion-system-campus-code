@@ -11,6 +11,9 @@ pt-BR:
         password: Senha
         password_confirmation: Confirmar senha
         remember_me: Lembre-me
+    errors:
+      messages:
+        confirmation: não é igual a senha
   titles:
     create_title: Criar sua conta
     sign_in_title: Entrar

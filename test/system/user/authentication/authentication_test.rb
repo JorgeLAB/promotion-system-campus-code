@@ -13,6 +13,8 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_text 'Já tem uma conta?'
     assert_link 'Entre', href: '/users/sign_in'
 
+    assert_text 'Criar sua conta'
+
     fill_in 'Email', with: 'mclovin@iugu.com.br'
     fill_in 'Senha', with: '12345678'
     fill_in 'Confirmar senha', with: '12345678'
@@ -26,7 +28,57 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_text 'Sair'
     assert_no_link 'Cadastrar'
     assert_current_path root_path
+  end
 
+  test 'user sign_up email domain must be correct' do
+    visit root_path
+    click_on 'Cadastrar'
+
+    assert_no_link 'Cadastrar'
+    assert_text 'Criar sua conta'
+    assert_text 'Já tem uma conta?'
+    assert_link 'Entre', href: '/users/sign_in'
+
+    fill_in 'Email', with: 'mclovin@gmail.com.br'
+    fill_in 'Senha', with: '12345678'
+    fill_in 'Confirmar senha', with: '12345678'
+    within 'form' do
+      click_on 'Cadastrar'
+    end
+
+    assert_text "Email possui domínio incorreto, utilize @iugu.com.br"
+  end
+
+  test 'user sign_up cannot fields blank' do
+
+    visit new_user_registration_path
+
+    fill_in 'Email', with: ''
+    fill_in 'Senha', with: ''
+    fill_in 'Confirmar senha', with: ''
+    within 'form' do
+      click_on 'Cadastrar'
+    end
+
+    assert_text 'Email não pode ficar em branco'
+    assert_text 'Senha não pode ficar em branco'
+    assert_text "Email possui domínio incorreto, utilize @iugu.com.br"
+
+    assert_current_path user_registration_path
+  end
+
+  test 'user password should be equal password confirmation' do
+
+    visit new_user_registration_path
+
+    fill_in 'Email', with: 'mclovin@iugu.com.br'
+    fill_in 'Senha', with: '12345678'
+    fill_in 'Confirmar senha', with: ''
+    within 'form' do
+      click_on 'Cadastrar'
+    end
+
+    assert_text 'Confirmar senha não é igual a senha'
   end
 
   test 'user sign_in' do
@@ -109,7 +161,6 @@ end
 # TODO: captcha não sou um robô
 # TODO: verificar os errors em cadastrar
 # TODO: teste de falha ao logar e ao se cadastrar
-# TODO: teste de recuperar senha
 # TODO: i18n do user
 # TODO: testar editar user
 # TODO: Adicionar nickname ao devise
@@ -117,7 +168,6 @@ end
 # TODO: Teste de sair
 # TODO: Teste de falha ao registrar
 # TODO: Teste de falha ao logar
-# TODO: Teste o recuperar senha
 # TODO: Teste o editar o usuário
 # TODO: I18n do user
 # TODO: incluir name no user
