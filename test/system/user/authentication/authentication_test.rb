@@ -152,6 +152,26 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_current_path new_user_session_path
   end
 
+  test 'user view forgot password with invalid email' do
+
+    visit new_user_password_path
+
+    fill_in 'Email', with: "mclovin@gmail.com.br"
+    click_on 'Enviar um email de confirmação'
+
+    assert_text "Email não encontrado"
+  end
+
+  test 'user view forgot password with blank email field' do
+
+    visit new_user_password_path
+
+    fill_in 'Email', with: ""
+    click_on 'Enviar um email de confirmação'
+
+    assert_text "Email não pode ficar em branco"
+  end
+
   test 'user edit password' do
     user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
     token = user.send(:set_reset_password_token)
@@ -167,20 +187,70 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_current_path root_path
   end
 
+  test 'user cannot edit password with password_confirmation blank' do
+    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    token = user.send(:set_reset_password_token)
+
+    visit edit_user_password_path(user, reset_password_token: token)
+
+    fill_in 'Senha', with: '123456789'
+    fill_in 'Confirmar senha', with: ''
+
+    click_on 'Trocar minha senha'
+
+    assert_text 'Confirmar senha não é igual a senha'
+  end
+
+  test 'user cannot edit password with password_confirmation invalid' do
+
+    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    token = user.send(:set_reset_password_token)
+    visit edit_user_password_path(user, reset_password_token: token)
+
+    fill_in 'Senha', with: '123456789'
+    fill_in 'Confirmar senha', with: '11111111'
+
+    click_on 'Trocar minha senha'
+
+    assert_text 'Confirmar senha não é igual a senha'
+  end
+
+  test 'user cannot edit password with password invalid' do
+
+    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    token = user.send(:set_reset_password_token)
+    visit edit_user_password_path(user, reset_password_token: token)
+
+    fill_in 'Senha', with: '12345'
+    fill_in 'Confirmar senha', with: '12345'
+
+    click_on 'Trocar minha senha'
+
+    assert_text 'Senha é muito curto (mínimo: 6 caracteres)'
+  end
+
+  test 'user cannot edit password with fields blank' do
+
+    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    token = user.send(:set_reset_password_token)
+    visit edit_user_password_path(user, reset_password_token: token)
+
+    fill_in 'Senha', with: ''
+    fill_in 'Confirmar senha', with: ''
+
+    click_on 'Trocar minha senha'
+
+    assert_text 'Senha não pode ficar em branco'
+  end
 end
 
 # TODO: não logar e ir para login?
 # TODO: confirmar a conta?
 # TODO: mandar email
-# TODO: Validar qualidade da senha?
 # TODO: captcha não sou um robô
-# TODO: verificar os errors em cadastrar
 # TODO: teste de falha ao logar e ao se cadastrar
-# TODO: i18n do user
-# TODO: testar editar user
 # TODO: Adicionar nickname ao devise
 
-# TODO: Teste de sair
 # TODO: Teste de falha ao registrar
 # TODO: Teste de falha ao logar
 # TODO: Teste o editar o usuário

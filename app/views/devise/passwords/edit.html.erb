@@ -14,25 +14,29 @@
           <%= render "devise/shared/error_messages", resource: resource %>
           <%= f.hidden_field :reset_password_token %>
 
-          <div class="form-row form-group w-100">
-            <%= f.label :password %>
-            <%= f.password_field :password,
-                                  autocomplete: "new-password",
-                                  class: "rounded-bottom border-bottom-5 form-control",
-                                  placeholder: t('placeholder.type_password')
-            %>
-            <% if @minimum_password_length %>
-              <em>(<%= @minimum_password_length %> <%= t('subtitles.minimal_length') %>)</em><br />
-            <% end %>
+          <div class="form-row" >
+            <div class="form-group w-100">
+              <%= f.label :password %>
+              <%= f.password_field :password,
+                                    autocomplete: "new-password",
+                                    class: "rounded-bottom border-bottom-5 form-control",
+                                    placeholder: t('placeholder.type_password')
+              %>
+              <% if @minimum_password_length %>
+                <em>(<%= @minimum_password_length %> <%= t('subtitles.minimal_length') %>)</em><br />
+              <% end %>
+            </div>
           </div>
 
-          <div class="form-row form-group w-100">
-            <%= f.label :password_confirmation %>
-            <%= f.password_field :password_confirmation,
-                                  autocomplete: "new-password",
-                                  class: "rounded-bottom border-bottom-5 form-control",
-                                  placeholder:  t('placeholder.type_password_confirmation')
-            %>
+          <div class="form-row">
+            <div class="form-group w-100">
+              <%= f.label :password_confirmation %>
+              <%= f.password_field :password_confirmation,
+                                    autocomplete: "new-password",
+                                    class: "rounded-bottom border-bottom-5 form-control",
+                                    placeholder:  t('placeholder.type_password_confirmation')
+              %>
+            </div>
           </div>
 
           <div class="form-row">
