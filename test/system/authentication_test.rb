@@ -71,6 +71,35 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_link 'Login'
     assert_no_link 'Sair'
   end
+
+  test 'user view forgot password' do
+    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+
+    visit new_user_session_path
+    click_on "Esqueci minha senha"
+    assert_current_path new_user_password_path
+
+    fill_in 'Email', with: user.email
+    click_on 'Enviar um email de confirmação'
+
+    assert_current_path new_user_session_path
+  end
+
+  test 'user edit password' do
+    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    token = user.send(:set_reset_password_token)
+
+    visit edit_user_password_path(user, reset_password_token: token)
+
+    fill_in 'Senha', with: '123456789'
+    fill_in 'Confirmar senha', with: '123456789'
+
+    click_on 'Trocar minha senha'
+
+    assert_text 'Senha atualizada com sucesso'
+    assert_current_path root_path
+  end
+
 end
 
 # TODO: não logar e ir para login?
@@ -85,3 +114,10 @@ end
 # TODO: testar editar user
 # TODO: Adicionar nickname ao devise
 
+# TODO: Teste de sair
+# TODO: Teste de falha ao registrar
+# TODO: Teste de falha ao logar
+# TODO: Teste o recuperar senha
+# TODO: Teste o editar o usuário
+# TODO: I18n do user
+# TODO: incluir name no user
