@@ -14,11 +14,20 @@ pt-BR:
   titles:
     create_title: Criar sua conta
     sign_in_title: Entrar
+    forgot_password_title: Recuperar senha
+    modify_password_title: Trocar senha
   subtitles:
     sign_in_ask: Já tem uma conta?
     sign_up_ask: Não possui cadastro?
+    minimal_length: caracteres no mínimo
   links:
     sign_in: Entre
     sign_up: cadastrar-se
+  buttons:
+    create_user: Cadastrar
+    reset_password_send_email: Enviar um email de confirmação
+    reset_password: Trocar minha senha
+
+
 
 
