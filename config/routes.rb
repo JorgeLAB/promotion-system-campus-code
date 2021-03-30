@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
-	root to: "home#index"
+
+	root "home#index"
 
 	resources :promotions do
     post 'generate_coupon', on: :member
