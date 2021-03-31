@@ -1,6 +1,6 @@
 <div class="mb-5">
   <%= form_with(url: path_url, id: "search_#{search_model}", method: :get) do |f| %>
-    <%= f.label :query, t('search_form.label_search') %>
+    <%= f.label :query, t('search_form.search_label') %>
     <%= f.search_field :query , placeholder: placeholder %>
 
     <%= f.submit t('buttons.search_button') %>

@@ -1,3 +1,10 @@
+<%= render partial: 'search',
+           locals: { path_url: search_coupon_promotion_path,
+                     search_model: 'coupon',
+                     placeholder: t('placeholder.search_coupon')
+                   }
+%>
+
 <dl>
   <dt><%= Promotion.human_attribute_name(:name) %></dt>
   <dd><%= @promotion.name %></dd>
@@ -18,12 +25,6 @@
   <dd><%= @promotion.coupon_quantity %></dd>
 </dl>
 
-<%= render partial: 'search',
-           locals: { path_url: search_coupon_promotion_path,
-                     search_model: 'coupon',
-                     placeholder: t('placeholder.search_coupon')
-                   }
-%>
 
 
 <% if @search_coupon.present? %>
