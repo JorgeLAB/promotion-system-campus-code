@@ -18,6 +18,19 @@ class PromotionShowTest < ApplicationSystemTestCase
     assert_button "Pesquisar"
   end
 
+  test 'can not search a coupon without login' do
+
+    promotion_natal = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                        code: 'NATAL10', discount_rate: 10,
+                                        coupon_quantity: 100, expiration_date: '22/12/2033')
+
+    promotion_natal.generated_coupons!
+
+    visit search_coupon_promotion_path(promotion_natal, query: 'NATAL10-0099')
+
+    assert_current_path new_user_session_path
+  end
+
   test 'search a coupon by exact code' do
     login_user
 
