@@ -43,6 +43,21 @@ class PromotionsIndexTest < ApplicationSystemTestCase
     end
   end
 
+  test 'can not search a promotion without login' do
+    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                      description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15', discount_rate: 15,
+                      expiration_date: '22/12/2033')
+
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+    visit search_promotions_path(query: 'Natal')
+
+    assert_current_path new_user_session_path
+  end
+
   test 'should search field in the index promotion' do
     login_user
 

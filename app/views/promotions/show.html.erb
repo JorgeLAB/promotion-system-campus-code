@@ -1,3 +1,10 @@
+<%= render partial: 'search',
+           locals: { path_url: search_coupon_promotion_path,
+                     search_model: 'coupon',
+                     placeholder: t('placeholder.search_coupon')
+                   }
+%>
+
 <dl>
   <dt><%= Promotion.human_attribute_name(:name) %></dt>
   <dd><%= @promotion.name %></dd>
@@ -17,6 +24,25 @@
   <dt><%= Promotion.human_attribute_name(:coupon_quantity) %></dt>
   <dd><%= @promotion.coupon_quantity %></dd>
 </dl>
+
+
+
+<% if @search_coupon.present? %>
+  <div id="search_coupon">
+    <% if @search_coupon.kind_of?(String) %>
+      <%= @search_coupon %>
+    <% else %>
+      <%= "#{@search_coupon.code} (#{ Coupon.human_attribute_name("status.#{@search_coupon.status}") })" %>
+
+      <% if @search_coupon.active? %>
+        <span> <%= link_to t('buttons.disable_status'), disable_coupon_path(@search_coupon), method: :post %> </span>
+      <% else %>
+        <span> <%= link_to t('buttons.active_status'), enable_coupon_path(@search_coupon), method: :post %> </span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
 
 <% if @promotion.coupons.empty? %>
   <%= link_to t('buttons.update_promotion'), edit_promotion_path(@promotion) %>

@@ -1,6 +1,9 @@
 class PromotionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_promotion, only: [ :show, :edit, :update, :destroy ]
+  before_action :load_promotion, only: [ :show, :edit, :update,
+                                         :destroy, :search_coupon,
+                                         :generate_coupon
+                                       ]
 
   def index
     @promotions = Promotion.all
@@ -49,7 +52,6 @@ class PromotionsController < ApplicationController
   end
 
   def generate_coupon
-    @promotion = Promotion.find(params[:id])
     @promotion.generated_coupons!
 
     flash.now[:success] = t('.success')
@@ -59,6 +61,11 @@ class PromotionsController < ApplicationController
   def search
     @promotions = Promotion.search( params[:query] )
     render :index
+  end
+
+  def search_coupon
+    @search_coupon = Coupon.search(params[:query])
+    render :show
   end
 
 	private

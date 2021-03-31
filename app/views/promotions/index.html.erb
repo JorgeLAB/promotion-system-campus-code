@@ -1,8 +1,13 @@
+<%= render partial: 'search',
+           locals: { path_url: search_promotions_path,
+                     search_model: 'promotion',
+                     placeholder: t('placeholder.search_promotion')
+                   }
+%>
+
 <% if @promotions.empty? %>
   <p> <%= t('.promotions_empty') %> </p>
 <% end %>
-
-<%= render 'search' %>
 
 <!-- Lista de Promoções -->
 
@@ -14,9 +19,9 @@
 
     <thead>
       <tr>
-        <th>Nome</th>
-        <th>Descrição</th>
-        <th>Desconto</th>
+        <th><%= Promotion.human_attribute_name(:name) %></th>
+        <th><%= Promotion.human_attribute_name(:description) %></th>
+        <th><%= Promotion.human_attribute_name(:discount_rate) %></th>
         <th colspan="2" style="background-color: gray;"></th>
       </tr>
     </thead>
