@@ -18,6 +18,31 @@
   <dd><%= @promotion.coupon_quantity %></dd>
 </dl>
 
+<div class="mb-5">
+  <%= form_with(url: search_coupon_promotion_path, id: "search_coupon", method: :get) do |f| %>
+    <%= f.label :query, "Procurar" %>
+    <%= f.search_field :query , placeholder: "Pesquisar Coupon" %>
+
+    <%= f.submit "Pesquisar" %>
+  <% end %>
+</div>
+
+<% if @search_coupon.present? %>
+  <div id="search_coupon">
+    <% if @search_coupon.kind_of?(String) %>
+      <%= @search_coupon %>
+    <% else %>
+      <%= "#{@search_coupon.code} (#{ Coupon.human_attribute_name("status.#{@search_coupon.status}") })" %>
+
+      <% if @search_coupon.active? %>
+        <span> <%= link_to t('buttons.disable_status'), disable_coupon_path(@search_coupon), method: :post %> </span>
+      <% else %>
+        <span> <%= link_to t('buttons.active_status'), enable_coupon_path(@search_coupon), method: :post %> </span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
 <% if @promotion.coupons.empty? %>
   <%= link_to t('buttons.update_promotion'), edit_promotion_path(@promotion) %>
   <%= link_to t('.generate_coupons'), generate_coupon_promotion_path(@promotion), method: :post %>
