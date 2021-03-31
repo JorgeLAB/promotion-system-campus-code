@@ -2,9 +2,14 @@
 pt-BR:
   buttons:
     back: Voltar
+    search_button: Pesquisar
+  search_form:
+    search_label: Buscar
   messages:
     confirm: Tem certeza?
   placeholder:
     type_email: Digíte seu email
     type_password: Digíte sua senha
     type_password_confirmation: Confirme sua senha
+    search_promotion: Pesquisar Promoção
+    search_coupon: Pesquisar Coupon

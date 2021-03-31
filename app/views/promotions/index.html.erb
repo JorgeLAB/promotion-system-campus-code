@@ -2,7 +2,12 @@
   <p> <%= t('.promotions_empty') %> </p>
 <% end %>
 
-<%= render 'search' %>
+<%= render partial: 'search',
+           locals: { path_url: search_promotions_path,
+                     search_model: 'promotion',
+                     placeholder: t('placeholder.search_promotion')
+                   }
+%>
 
 <!-- Lista de Promoções -->
 

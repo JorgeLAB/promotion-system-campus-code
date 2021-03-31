@@ -18,14 +18,13 @@
   <dd><%= @promotion.coupon_quantity %></dd>
 </dl>
 
-<div class="mb-5">
-  <%= form_with(url: search_coupon_promotion_path, id: "search_coupon", method: :get) do |f| %>
-    <%= f.label :query, "Procurar" %>
-    <%= f.search_field :query , placeholder: "Pesquisar Coupon" %>
+<%= render partial: 'search',
+           locals: { path_url: search_coupon_promotion_path,
+                     search_model: 'coupon',
+                     placeholder: t('placeholder.search_coupon')
+                   }
+%>
 
-    <%= f.submit "Pesquisar" %>
-  <% end %>
-</div>
 
 <% if @search_coupon.present? %>
   <div id="search_coupon">
@@ -42,6 +41,7 @@
     <% end %>
   </div>
 <% end %>
+
 
 <% if @promotion.coupons.empty? %>
   <%= link_to t('buttons.update_promotion'), edit_promotion_path(@promotion) %>
