@@ -27,8 +27,13 @@ pt-BR:
       success: Promoção deletada com sucesso.
     update:
       success: Promoção atualizada com sucesso.
+    edit:
+      edit_title: Editar Promoção
+      notice: Coupons gerados, Promoção não pode ser atualizada.
     create:
       success: Promoção criada com sucesso.
+    new:
+      create_title: Criar Promoção
   helpers:
     submit:
       create: Criar %{model}

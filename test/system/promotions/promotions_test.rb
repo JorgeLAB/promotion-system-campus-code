@@ -128,6 +128,8 @@ class PromotionsTest < ApplicationSystemTestCase
 
     visit new_promotion_path
 
+    assert_text 'Criar Promoção'
+
     fill_in 'Nome', with: 'Cyber Monday'
     fill_in 'Descrição', with: 'Promoção de Cyber Monday'
     fill_in 'Código', with: 'CYBER15'
@@ -183,6 +185,8 @@ class PromotionsTest < ApplicationSystemTestCase
 
     click_on "Atualizar Promoção"
 
+    assert_text 'Editar Promoção'
+
     assert_selector "form input[type=text][value='Independência']"
     assert_text 'Promoção da independência.'
     assert_selector "form input[type=text][value='Free22']"
@@ -232,11 +236,18 @@ class PromotionsTest < ApplicationSystemTestCase
                                   expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
                                   )
     promotion.generated_coupons!
+
     login_user
+
+    visit promotions_path
+
+    click_on 'Atualizar Promoção'
+    assert_text 'Coupons gerados, Promoção não pode ser atualizada.'
 
     visit promotion_path(promotion)
 
     assert_no_link 'Atualizar Promoção'
+
   end
 
   test 'destroy promotion' do
