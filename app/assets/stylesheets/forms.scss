@@ -1,0 +1,34 @@
+/* Forms */
+.standard_forms{
+  form{
+
+    .submit{
+      color: var(--color-primary);
+      font-weight: bold;
+    }
+
+    .submit:hover{
+      color: #25B26F;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .button-submit{
+      background-color: var(--color-primary);
+      font-weight: bold;
+    }
+
+    .button-submit:hover{
+      background-color: #25B26F;
+      font-weight: bold;
+    }
+
+    input {
+      &:focus {
+        outline: none;
+        transition: transform .15s ease;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
