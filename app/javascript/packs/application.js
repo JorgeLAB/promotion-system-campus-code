@@ -8,7 +8,4 @@ Rails.start()
 import 'jquery'
 import 'popper.js'
 import 'bootstrap'
-import "../scss/application"
-
-/* TODO: Realizar busca via ajax depois */
-// import "../search_promotion"
+import '../scss/application'
