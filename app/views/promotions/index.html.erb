@@ -1,13 +1,17 @@
-<%= render partial: 'search',
-           locals: { path_url: search_promotions_path,
-                     search_model: 'promotion',
-                     placeholder: t('placeholder.search_promotion')
-                   }
-%>
+<div class="container">
+  <%= render partial: 'search',
+             locals: { path_url: search_promotions_path,
+                       search_model: 'promotion',
+                       placeholder: t('placeholder.search_promotion')
+                     }
+  %>
 
-<% if @promotions.empty? %>
-  <p> <%= t('.promotions_empty') %> </p>
-<% end %>
+  <% if @promotions.empty? %>
+    <div class="alert alert-warning mb-5 mt-5" role="alert">
+      <%= t('.promotions_empty') %>
+    </div>
+  <% end %>
+</div>
 
 <!-- Lista de Promoções -->
 
