@@ -1,33 +1,53 @@
-<%= form_with model: @promotion do |f| %>
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
+<div class="container">
+  <div class="d-flex justify-content-center col-sm-12 col-md-10 col-lg">
+    <div class="col-lg-10 standard_forms">
+      <%= form_with model: @promotion do |f| %>
+        <div class="form-row">
+          <div class="form-group w-100">
+            <%= f.label :name %>
+            <%= f.text_field :name, class:"form-control" %>
+          </div>
+        </div>
 
-  <div>
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-  </div>
+        <div class="form-row">
+          <div class="form-group w-100">
+            <%= f.label :description %>
+            <%= f.text_area :description, class:"form-control" %>
+          </div>
+        </div>
 
-  <div>
-    <%= f.label :code %>
-    <%= f.text_field :code %>
-  </div>
+        <div class="form-row">
+          <div class="form-group w-100">
+            <%= f.label :code %>
+            <%= f.text_field :code, class:"form-control" %>
+          </div>
+        </div>
 
-  <div>
-    <%= f.label :discount_rate %>
-    <%= f.number_field :discount_rate, in: 1..100, step: 0.1 %>
-  </div>
+        <div class="form-row">
+          <div class="form-group w-100">
+            <%= f.label :discount_rate %>
+            <%= f.number_field :discount_rate, in: 1..100, step: 0.1, class:"form-control" %>
+          </div>
+        </div>
 
-  <div>
-    <%= f.label :coupon_quantity %>
-    <%= f.number_field :coupon_quantity %>
-  </div>
+        <div class="form-row">
+          <div class="form-group w-100">
+            <%= f.label :coupon_quantity %>
+            <%= f.number_field :coupon_quantity, class:"form-control" %>
+          </div>
+        </div>
 
-  <div>
-    <%= f.label :expiration_date %>
-    <%= f.date_field :expiration_date %>
-  </div>
+        <div class="form-row">
+          <div class="form-group w-100">
+            <%= f.label :expiration_date %>
+            <%= f.date_field :expiration_date, class:"form-control" %>
+          </div>
+        </div>
 
-  <%= f.submit %>
-<% end %>
+        <div class="form-row">
+          <%= f.submit class:"btn btn-lg btn-block text-center mt-3 mb-4 button-submit"  %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -26,22 +26,23 @@ class PromotionsController < ApplicationController
 
 	def show; end
 
-  def edit; end
+  def edit
+    if @promotion.coupons?
+      return redirect_to @promotion, notice: t('.notice')
+    end
+  end
 
   def update
 
-    if @promotion.coupons?
-      return redirect_to @promotion, notice: "Promoção não pode ser atualizada", status: :not_modified
-    end
+    return redirect_to promotions_path if @promotion.coupons?
 
-    @promotion.attributes = promotion_params
-
-    if @promotion.save
+    if @promotion.update(promotion_params)
       return redirect_to @promotion, success: t('.success')
     else
       flash.now[:error] = @promotion.errors.full_messages
       render :edit
     end
+
   end
 
   def destroy

@@ -104,9 +104,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_text 'NATAL10-0001'
     assert_text 'NATAL10-0100'
-    assert_selector 'div#coupons_list li', count: promotion.coupon_quantity
-
-    # assert_match( regexp, string, [msg] ) para verificar se os code gerados correspondem ao padrão
+    assert_selector 'div#coupons_list .list-group-item', count: promotion.coupon_quantity
   end
 
   test 'generate coupons button need hide' do
@@ -127,6 +125,8 @@ class PromotionsTest < ApplicationSystemTestCase
     login_user
 
     visit new_promotion_path
+
+    assert_text 'Criar Promoção'
 
     fill_in 'Nome', with: 'Cyber Monday'
     fill_in 'Descrição', with: 'Promoção de Cyber Monday'
@@ -183,6 +183,8 @@ class PromotionsTest < ApplicationSystemTestCase
 
     click_on "Atualizar Promoção"
 
+    assert_text 'Editar Promoção'
+
     assert_selector "form input[type=text][value='Independência']"
     assert_text 'Promoção da independência.'
     assert_selector "form input[type=text][value='Free22']"
@@ -232,11 +234,18 @@ class PromotionsTest < ApplicationSystemTestCase
                                   expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
                                   )
     promotion.generated_coupons!
+
     login_user
+
+    visit promotions_path
+
+    click_on 'Atualizar Promoção'
+    assert_text 'Coupons gerados, Promoção não pode ser atualizada.'
 
     visit promotion_path(promotion)
 
     assert_no_link 'Atualizar Promoção'
+
   end
 
   test 'destroy promotion' do

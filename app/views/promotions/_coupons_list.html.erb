@@ -1,0 +1,25 @@
+<% if @promotion.coupons.any? %>
+
+  <div class="container text-center col-lg-3 mb-5 mt-5">
+    <%= render partial: 'search',
+             locals: { path_url: search_coupon_promotion_path,
+                       search_model: 'coupon',
+                       placeholder: t('placeholder.search_coupon')
+                     }
+    %>
+
+    <div id="coupons_list" class="list-group">
+      <% @promotion.coupons.each do |coupon| %>
+        <div id="coupon-<%= coupon.code.parameterize %>" class="list-group-item list-group-item-light">
+          <%= "#{coupon.code} (#{ Coupon.human_attribute_name("status.#{coupon.status}") })" %>
+
+          <% if coupon.active? %>
+            <span> <%= link_to t('buttons.disable_status'), disable_coupon_path(coupon), method: :post %> </span>
+          <% else %>
+            <span> <%= link_to t('buttons.active_status'), enable_coupon_path(coupon), method: :post %> </span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

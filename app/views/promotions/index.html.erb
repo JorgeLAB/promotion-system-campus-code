@@ -1,13 +1,17 @@
-<%= render partial: 'search',
-           locals: { path_url: search_promotions_path,
-                     search_model: 'promotion',
-                     placeholder: t('placeholder.search_promotion')
-                   }
-%>
+<div class="container">
+  <%= render partial: 'search',
+             locals: { path_url: search_promotions_path,
+                       search_model: 'promotion',
+                       placeholder: t('placeholder.search_promotion')
+                     }
+  %>
 
-<% if @promotions.empty? %>
-  <p> <%= t('.promotions_empty') %> </p>
-<% end %>
+  <% if @promotions.empty? %>
+    <div class="alert alert-warning mb-5 mt-5" role="alert">
+      <%= t('.promotions_empty') %>
+    </div>
+  <% end %>
+</div>
 
 <!-- Lista de Promoções -->
 
@@ -45,7 +49,7 @@
   </table>
 </div>
 
-<div>
-  <%= link_to t('buttons.create_promotion'), new_promotion_path %>
-  <%= link_to t('buttons.back'), root_path %>
+<div id="buttons-promotion" class="mt-5 mr-5">
+  <%= link_to t('buttons.back'), root_path, class:"btn btn-secondary float-right ml-4" %>
+  <%= link_to t('buttons.create_promotion'), new_promotion_path, class:"btn btn-success float-right" %>
 </div>
