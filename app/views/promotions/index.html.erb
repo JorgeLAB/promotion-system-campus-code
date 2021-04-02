@@ -45,7 +45,7 @@
   </table>
 </div>
 
-<div>
-  <%= link_to t('buttons.create_promotion'), new_promotion_path %>
-  <%= link_to t('buttons.back'), root_path %>
+<div id="buttons-promotion" class="mt-5 mr-5">
+  <%= link_to t('buttons.back'), root_path, class:"btn btn-secondary float-right ml-4" %>
+  <%= link_to t('buttons.create_promotion'), new_promotion_path, class:"btn btn-success float-right" %>
 </div>
