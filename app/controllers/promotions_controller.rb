@@ -34,12 +34,15 @@ class PromotionsController < ApplicationController
 
   def update
 
+    return redirect_to promotions_path if @promotion.coupons?
+
     if @promotion.update(promotion_params)
       return redirect_to @promotion, success: t('.success')
     else
       flash.now[:error] = @promotion.errors.full_messages
       render :edit
     end
+
   end
 
   def destroy

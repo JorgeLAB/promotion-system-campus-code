@@ -78,7 +78,7 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
       }
     )
 
-    assert_response :not_modified
+    assert_redirected_to promotions_path
   end
 
   test 'cannot destroy a promotion without login' do
