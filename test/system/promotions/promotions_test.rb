@@ -104,9 +104,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_text 'NATAL10-0001'
     assert_text 'NATAL10-0100'
-    assert_selector 'div#coupons_list li', count: promotion.coupon_quantity
-
-    # assert_match( regexp, string, [msg] ) para verificar se os code gerados correspondem ao padrão
+    assert_selector 'div#coupons_list .list-group-item', count: promotion.coupon_quantity
   end
 
   test 'generate coupons button need hide' do

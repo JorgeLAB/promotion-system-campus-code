@@ -11,11 +11,26 @@ class PromotionShowTest < ApplicationSystemTestCase
                           code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                           expiration_date: '22/12/2033')
 
+    promotion.generated_coupons!
+
     visit promotion_path(promotion)
 
     assert_selector "form input[type=search][placeholder='Pesquisar Coupon']"
 
     assert_button "Pesquisar"
+  end
+
+  test 'hidden research field without coupons' do
+    login_user
+
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+
+    visit promotion_path(promotion)
+
+    assert_no_selector "div#search_coupon"
   end
 
   test 'can not search a coupon without login' do
@@ -42,7 +57,11 @@ class PromotionShowTest < ApplicationSystemTestCase
 
     visit promotion_path(promotion)
 
-    fill_in '', with: 'NATAL10-0001'
+
+    within 'form#search_coupon' do
+      fill_in 'Buscar', with: 'NATAL10-0001'
+    end
+
     click_on 'Pesquisar'
 
     within 'div#search_coupon' do
@@ -88,6 +107,4 @@ class PromotionShowTest < ApplicationSystemTestCase
       assert_text 'Código não encontrado'
     end
   end
-
-
 end
