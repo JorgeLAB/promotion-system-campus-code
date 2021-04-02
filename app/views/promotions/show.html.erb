@@ -1,68 +1,78 @@
-<%= render partial: 'search',
-           locals: { path_url: search_coupon_promotion_path,
-                     search_model: 'coupon',
-                     placeholder: t('placeholder.search_coupon')
-                   }
-%>
+<div class="container-fluid show_card">
+  <div class="cards">
+    <div class="card">
+      <div class="contents">
+        <div class="container-fluid">
 
-<dl>
-  <dt><%= Promotion.human_attribute_name(:name) %></dt>
-  <dd><%= @promotion.name %></dd>
+          <div class="row mb-3">
+            <h5 class="attribute_camp mr-4">
+              <%= Promotion.human_attribute_name(:name) %>:
+            </h5>
+            <span class="attribute_value">
+              <%= @promotion.name %>
+            </span>
+          </div>
 
-  <dt><%= Promotion.human_attribute_name(:description) %></dt>
-  <dd><%= @promotion.description %></dd>
+          <div class="row mb-3">
+            <h5 class="attribute_camp mr-4">
+              <%= Promotion.human_attribute_name(:description) %>:
+            </h5>
+            <span class="attribute_value">
+              <%= @promotion.description %>
+            </span>
+          </div>
 
-  <dt><%= Promotion.human_attribute_name(:discount_rate) %></dt>
-  <dd><%= number_to_percentage(@promotion.discount_rate, separator: ",", precision: 2) %></dd>
+          <div class="row mb-3">
+            <h5 class="attribute_camp mr-4">
+              <%= Promotion.human_attribute_name(:discount_rate) %>:
+            </h5>
+            <span class="attribute_value">
+              <%= number_to_percentage(@promotion.discount_rate, precision: 2) %>
+            </span>
+          </div>
 
-  <dt><%= Promotion.human_attribute_name(:code) %></dt>
-  <dd><%= @promotion.code %></dd>
+          <div class="row mb-3">
+            <h5 class="attribute_camp mr-4">
+              <%= Promotion.human_attribute_name(:code) %>:
+            </h5>
+            <span class="attribute_value">
+              <%= @promotion.code %>
+            </span>
+          </div>
 
-  <dt><%= Promotion.human_attribute_name(:expiration_date) %></dt>
-  <dd><%= @promotion.expiration_date.strftime("%d/%m/%Y") %></dd>
+          <div class="row mb-3">
+            <h5 class="attribute_camp mr-4">
+              <%= Promotion.human_attribute_name(:expiration_date) %>:
+            </h5>
+            <span class="attribute_value">
+              <%= @promotion.expiration_date.strftime("%d/%m/%Y") %>
+            </span>
+          </div>
 
-  <dt><%= Promotion.human_attribute_name(:coupon_quantity) %></dt>
-  <dd><%= @promotion.coupon_quantity %></dd>
-</dl>
+          <div class="row mb-3">
+            <h5 class="attribute_camp mr-4">
+              <%= Promotion.human_attribute_name(:coupon_quantity) %>:
+            </h5>
+            <span class="attribute_value">
+              <%= @promotion.coupon_quantity %>
+            </span>
+          </div>
 
+          <div class="row mb-3">
+            <% if @promotion.coupons.empty? %>
+              <%= link_to t('buttons.update_promotion'), edit_promotion_path(@promotion),
+                                                         class:"btn btn-info float-right mr-2" %>
+              <%= link_to t('.generate_coupons'), generate_coupon_promotion_path(@promotion),
+                                                  method: :post,
+                                                  class:"btn btn-success float-right" %>
+            <% end %>
+          </div>
 
-
-<% if @search_coupon.present? %>
-  <div id="search_coupon">
-    <% if @search_coupon.kind_of?(String) %>
-      <%= @search_coupon %>
-    <% else %>
-      <%= "#{@search_coupon.code} (#{ Coupon.human_attribute_name("status.#{@search_coupon.status}") })" %>
-
-      <% if @search_coupon.active? %>
-        <span> <%= link_to t('buttons.disable_status'), disable_coupon_path(@search_coupon), method: :post %> </span>
-      <% else %>
-        <span> <%= link_to t('buttons.active_status'), enable_coupon_path(@search_coupon), method: :post %> </span>
-      <% end %>
-    <% end %>
+          <%= link_to t('buttons.back'), promotions_path, class:"btn btn-secondary float-right" %>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
-
-
-<% if @promotion.coupons.empty? %>
-  <%= link_to t('buttons.update_promotion'), edit_promotion_path(@promotion) %>
-  <%= link_to t('.generate_coupons'), generate_coupon_promotion_path(@promotion), method: :post %>
-<% end %>
-
-<div id="coupons_list">
-  <ul>
-    <% @promotion.coupons.each do |coupon| %>
-      <li id="coupon-<%= coupon.code.parameterize %>">
-        <%= "#{coupon.code} (#{ Coupon.human_attribute_name("status.#{coupon.status}") })" %>
-
-        <% if coupon.active? %>
-          <span> <%= link_to t('buttons.disable_status'), disable_coupon_path(coupon), method: :post %> </span>
-        <% else %>
-          <span> <%= link_to t('buttons.active_status'), enable_coupon_path(coupon), method: :post %> </span>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
 </div>
 
-<%= link_to t('buttons.back'), promotions_path %>
+<%= render 'coupons_list'%>
