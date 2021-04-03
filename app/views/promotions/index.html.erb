@@ -14,19 +14,14 @@
 </div>
 
 <!-- Lista de Promoções -->
-
 <div id="list_promotions" class="tables_standard" >
-  <table class="table table-hover"
-         data-toggle="table"
-         data-search="true"
-         data-strict-search="true" >
-
+  <table class="table table-hover">
     <thead>
       <tr>
         <th><%= Promotion.human_attribute_name(:name) %></th>
         <th><%= Promotion.human_attribute_name(:description) %></th>
         <th><%= Promotion.human_attribute_name(:discount_rate) %></th>
-        <th colspan="2" style="background-color: gray;"></th>
+        <th colspan="3" style="background-color: gray;"></th>
       </tr>
     </thead>
 
@@ -42,10 +37,19 @@
                         promotion, method: :delete,
                         data: { confirm: t('messages.confirm') } %>
           </td>
+
+          <% if promotion.approved? %>
+            <td> <%= "Aprovada por: #{promotion.promotion_approval.user.email}" %> </td>
+          <% else %>
+            <td>
+              <%= link_to 'Aprovar', approve_promotion_path(promotion),
+                           method: :post,
+                           data: { confirm: t('messages.confirm') } %>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
-
   </table>
 </div>
 
