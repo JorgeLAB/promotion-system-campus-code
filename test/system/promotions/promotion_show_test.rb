@@ -5,11 +5,11 @@ class PromotionShowTest < ApplicationSystemTestCase
   include LoginMacros
 
   test 'should search field in the show promotion' do
-    login_user
+    user = login_user
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                           code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                          expiration_date: '22/12/2033')
+                          expiration_date: '22/12/2033', user: user)
 
     promotion.generated_coupons!
 
@@ -21,11 +21,11 @@ class PromotionShowTest < ApplicationSystemTestCase
   end
 
   test 'hidden research field without coupons' do
-    login_user
+    user = login_user
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
 
 
     visit promotion_path(promotion)
@@ -34,10 +34,11 @@ class PromotionShowTest < ApplicationSystemTestCase
   end
 
   test 'can not search a coupon without login' do
+    user = User.create!(email: 'mclovin@iugu.com.br', password: '1234567')
 
     promotion_natal = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                         code: 'NATAL10', discount_rate: 10,
-                                        coupon_quantity: 100, expiration_date: '22/12/2033')
+                                        coupon_quantity: 100, expiration_date: '22/12/2033', user: user)
 
     promotion_natal.generated_coupons!
 
@@ -47,11 +48,11 @@ class PromotionShowTest < ApplicationSystemTestCase
   end
 
   test 'search a coupon by exact code' do
-    login_user
+    user = login_user
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                               code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                              expiration_date: '22/12/2033')
+                              expiration_date: '22/12/2033', user: user)
 
     promotion.generated_coupons!
 
@@ -71,11 +72,11 @@ class PromotionShowTest < ApplicationSystemTestCase
   end
 
   test 'search a coupon by invalid code' do
-    login_user
+    user = login_user
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                               code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                              expiration_date: '22/12/2033')
+                              expiration_date: '22/12/2033', user: user)
 
     promotion.generated_coupons!
 
@@ -90,11 +91,11 @@ class PromotionShowTest < ApplicationSystemTestCase
   end
 
   test 'search can not find coupon' do
-    login_user
+    user = login_user
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                               code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                              expiration_date: '22/12/2033')
+                              expiration_date: '22/12/2033', user: user)
 
     promotion.generated_coupons!
 
