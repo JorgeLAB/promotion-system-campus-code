@@ -4,6 +4,7 @@ class PromotionsController < ApplicationController
                                          :destroy, :search_coupon,
                                          :generate_coupon, :approve
                                        ]
+  before_action :can_be_approved, only: [:approve]
 
   def index
     @promotions = Promotion.all
@@ -70,7 +71,7 @@ class PromotionsController < ApplicationController
   end
 
   def approve
-    PromotionApproval.create!(promotion: @promotion, user: current_user)
+    current_user.promotion_approvals.create!(promotion: @promotion)
     redirect_to promotions_path, success: "Promoção #{@promotion.name} aprovada com sucesso!"
   end
 
@@ -86,6 +87,10 @@ class PromotionsController < ApplicationController
 
     def load_promotion
       @promotion = Promotion.find(params[:id])
+    end
+
+    def can_be_approved
+      redirect_to promotions_path, alert: 'Ação não permitida' unless @promotion.can_approve?(current_user)
     end
 end
 

@@ -39,13 +39,17 @@
           </td>
 
           <% if promotion.approved? %>
-            <td> <%= "Aprovada por: #{promotion.promotion_approval.user.email}" %> </td>
-          <% else %>
+            <td> <%= "Aprovada por: #{promotion.approver.email}" %> </td>
+          <% elsif promotion.can_approve?(current_user) %>
             <td>
               <%= link_to 'Aprovar', approve_promotion_path(promotion),
                            method: :post,
                            data: { confirm: t('messages.confirm') } %>
             </td>
+          <% else %>
+              <td>
+                Aguardando Aprovação!
+              </td>
           <% end %>
         </tr>
       <% end %>

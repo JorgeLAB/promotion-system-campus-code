@@ -2,6 +2,7 @@ class Promotion < ApplicationRecord
   has_many :coupons, dependent: :destroy
   belongs_to :user
   has_one :promotion_approval
+  has_one :approver, through: :promotion_approval, source: :user
 
   validates :name, presence: true,
                    uniqueness: true
@@ -32,6 +33,10 @@ class Promotion < ApplicationRecord
 
   def approved?
     promotion_approval.present?
+  end
+
+  def can_approve?(current_user)
+    user != current_user
   end
 
   class << self
