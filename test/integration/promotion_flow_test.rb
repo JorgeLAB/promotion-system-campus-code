@@ -111,4 +111,20 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
       delete promotion_path(promotion)
     end
   end
+
+  test 'can not approve if owner' do
+    user = User.create!(email: 'mclogin@iugu.com.br', password: '1234567')
+
+    promotion = Promotion.create!(name: 'Natal', coupon_quantity: 10,
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10,
+                                  expiration_date: '22/12/2033', user: user)
+
+    login_user(user)
+    post approve_promotion_path(promotion)
+    assert_redirected_to promotions_path
+
+    refute promotion.reload.approved?
+    assert_equal 'Ação não permitida', flash[:alert]
+  end
 end

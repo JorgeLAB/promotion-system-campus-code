@@ -325,10 +325,24 @@ class PromotionsTest < ApplicationSystemTestCase
     visit promotions_path
     accept_confirm { click_on 'Aprovar' }
     assert_text "Promoção #{promotion.name} aprovada com sucesso!"
-    assert_text "Aprovada por: #{promotion.promotion_approval.user.email}"
+    assert_text "Aprovada por: #{promotion.approver.email}"
+    refute_link 'Aprovar'
+  end
+
+  test 'user cannot approves his promotion' do
+    user = login_user
+
+    promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
+                                  code: 'Free22', discount_rate: 40, coupon_quantity: 200,
+                                  expiration_date: I18n.l(Date.today, format: '%Y-%m-%d'), user: user)
+
+    visit promotions_path
+    assert_text 'Aguardando Aprovação!'
     refute_link 'Aprovar'
   end
 end
 
 # Testaremos apenas rotas get já que são os únicos métodos permitidos para o uso de visit. Aqui vc não fará para POST, nem para PATCH, nem para DELETE ou PUT somente GET.
 # Para isso devemos realizar teste de integração.
+# TODO: teste de integração para approves.
+# TODO: teste de login da aprovação
