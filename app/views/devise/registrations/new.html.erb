@@ -16,6 +16,18 @@
 
           <div class="form-row">
             <div class="form-group w-100">
+              <%= f.label :name %>
+              <%= f.text_field :name,
+                                autofocus: true,
+                                autocomplete: "seu-nome",
+                                class: "rounded-bottom border-bottom-5 form-control",
+                                placeholder: t('placeholder.type_name')
+              %>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group w-100">
               <%= f.label :email %>
               <%= f.email_field :email,
                                  autofocus: true,

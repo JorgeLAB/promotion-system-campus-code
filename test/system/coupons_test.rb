@@ -9,7 +9,7 @@ class CouponsTest < ApplicationSystemTestCase
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: '22/12/2033', user: user)
+                                  expiration_date: Time.zone.tomorrow, user: user)
 
     coupon = Coupon.create!(code:"NATAL10-0001", promotion: promotion)
 
@@ -27,7 +27,7 @@ class CouponsTest < ApplicationSystemTestCase
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: '22/12/2033', user: user)
+                                  expiration_date: Time.zone.tomorrow, user: user)
 
     coupon = Coupon.create!(code:"NATAL10-0001", promotion: promotion)
     coupon.disabled!

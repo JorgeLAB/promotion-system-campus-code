@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   test 'attribute email cannot be incorrect' do
-    user = User.new(email: 'mclovin@gmail.com', password: '1234567', password_confirmation: '1234567')
+    user = User.new(name: 'IuguBot', email: 'mclovin@gmail.com', password: '1234567', password_confirmation: '1234567')
 
     refute user.valid?
 
