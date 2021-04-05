@@ -8,6 +8,7 @@ pt-BR:
   messages:
     confirm: Tem certeza?
   placeholder:
+    type_name: Digíte seu nome
     type_email: Digíte seu email
     type_password: Digíte sua senha
     type_password_confirmation: Confirme sua senha

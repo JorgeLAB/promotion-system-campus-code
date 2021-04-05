@@ -15,6 +15,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     assert_text 'Criar sua conta'
 
+    fill_in 'Nome', with: 'IuguBot'
     fill_in 'Email', with: 'mclovin@iugu.com.br'
     fill_in 'Senha', with: '12345678'
     fill_in 'Confirmar senha', with: '12345678'
@@ -39,6 +40,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_text 'Já tem uma conta?'
     assert_link 'Entre', href: '/users/sign_in'
 
+    fill_in 'Nome', with: 'IuguBot'
     fill_in 'Email', with: 'mclovin@gmail.com.br'
     fill_in 'Senha', with: '12345678'
     fill_in 'Confirmar senha', with: '12345678'
@@ -53,6 +55,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     visit new_user_registration_path
 
+    fill_in 'Nome', with: ''
     fill_in 'Email', with: ''
     fill_in 'Senha', with: ''
     fill_in 'Confirmar senha', with: ''
@@ -63,6 +66,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_text 'Email não pode ficar em branco'
     assert_text 'Senha não pode ficar em branco'
     assert_text "Email possui domínio incorreto, utilize @iugu.com.br"
+    assert_text 'Nome não pode ficar em branco'
 
     assert_current_path user_registration_path
   end
@@ -71,6 +75,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     visit new_user_registration_path
 
+    fill_in 'Nome', with: 'IuguBot'
     fill_in 'Email', with: 'mclovin@iugu.com.br'
     fill_in 'Senha', with: '12345678'
     fill_in 'Confirmar senha', with: ''
@@ -82,7 +87,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'user sign_in' do
-    user = User.create!(email: 'mclovin@iugu.com.br', password: '12345678')
+    user = User.create!(name: "IuguBot", email: 'mclovin@iugu.com.br', password: '12345678')
 
     visit root_path
 
@@ -111,7 +116,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'user can not sign_in with fields blank' do
-    user = User.create!(email: 'mclovin@iugu.com.br', password: '12345678')
+    user = User.create!(name: "IuguBot", email: 'mclovin@iugu.com.br', password: '12345678')
 
     visit new_user_session_path
 
@@ -140,7 +145,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'user view forgot password' do
-    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    user = User.create!(name: "IuguBot", email: "mclovin@iugu.com.br", password: "1234567")
 
     visit new_user_session_path
     click_on "Esqueci minha senha"
@@ -173,7 +178,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'user edit password' do
-    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    user = User.create!(name: "IuguBot", email: "mclovin@iugu.com.br", password: "1234567")
     token = user.send(:set_reset_password_token)
 
     visit edit_user_password_path(user, reset_password_token: token)
@@ -188,7 +193,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'user cannot edit password with password_confirmation blank' do
-    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    user = User.create!(name: "IuguBot", email: "mclovin@iugu.com.br", password: "1234567")
     token = user.send(:set_reset_password_token)
 
     visit edit_user_password_path(user, reset_password_token: token)
@@ -203,7 +208,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
   test 'user cannot edit password with password_confirmation invalid' do
 
-    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    user = User.create!(name: "IuguBot", email: "mclovin@iugu.com.br", password: "1234567")
     token = user.send(:set_reset_password_token)
     visit edit_user_password_path(user, reset_password_token: token)
 
@@ -217,7 +222,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
   test 'user cannot edit password with password invalid' do
 
-    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    user = User.create!(name: "IuguBot", email: "mclovin@iugu.com.br", password: "1234567")
     token = user.send(:set_reset_password_token)
     visit edit_user_password_path(user, reset_password_token: token)
 
@@ -231,7 +236,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
   test 'user cannot edit password with fields blank' do
 
-    user = User.create!(email: "mclovin@iugu.com.br", password: "1234567")
+    user = User.create!(name: "IuguBot", email: "mclovin@iugu.com.br", password: "1234567")
     token = user.send(:set_reset_password_token)
     visit edit_user_password_path(user, reset_password_token: token)
 
