@@ -5,11 +5,11 @@ class CouponsTest < ApplicationSystemTestCase
   include LoginMacros
 
   test 'disable a coupon' do
-    login_user
+    user = login_user
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: '22/12/2033')
+                                  expiration_date: '22/12/2033', user: user)
 
     coupon = Coupon.create!(code:"NATAL10-0001", promotion: promotion)
 
@@ -23,11 +23,11 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'enable a coupon' do
-    login_user
+    user = login_user
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: '22/12/2033')
+                                  expiration_date: '22/12/2033', user: user)
 
     coupon = Coupon.create!(code:"NATAL10-0001", promotion: promotion)
     coupon.disabled!

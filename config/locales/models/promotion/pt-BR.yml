@@ -16,6 +16,7 @@ pt-BR:
     errors:
       messages:
         taken: deve ser único
+        future_date: Data inválida - data tem de ser futura
   promotions:
     index:
       promotions_empty: Nenhuma promoção cadastrada

@@ -6,15 +6,15 @@ class PromotionsIndexTest < ApplicationSystemTestCase
 
   test 'have a table with promotions' do
 
-    login_user
+    user = login_user
     promotion_natal = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                         code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                        expiration_date: '22/12/2033')
+                                        expiration_date: '22/12/2033', user: user)
 
     promotion_cyber = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 100,
                                         description: 'Promoção de Cyber Monday',
                                         code: 'CYBER15', discount_rate: 15,
-                                        expiration_date: '22/12/2033')
+                                        expiration_date: '22/12/2033',  user: user)
 
     visit promotions_path
 
@@ -44,14 +44,16 @@ class PromotionsIndexTest < ApplicationSystemTestCase
   end
 
   test 'can not search a promotion without login' do
+    user = User.create!(email: 'mclovin@iugu.com.br', password:'1234567')
+
     Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
 
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
 
     visit search_promotions_path(query: 'Natal')
 
@@ -69,16 +71,16 @@ class PromotionsIndexTest < ApplicationSystemTestCase
   end
 
   test "should search with your exact name" do
-    login_user
+    user = login_user
 
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
 
     promotion_cyber = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                                         description: 'Promoção de Cyber Monday',
                                         code: 'CYBER15', discount_rate: 15,
-                                        expiration_date: '22/12/2033')
+                                        expiration_date: '22/12/2033', user: user)
 
     visit promotions_path
 
@@ -100,21 +102,21 @@ class PromotionsIndexTest < ApplicationSystemTestCase
   end
 
   test "should search with partial name" do
-    login_user
+    user = login_user
 
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
 
     promotion_sunday = Promotion.create!(name: 'Cyber Sunday', coupon_quantity: 90,
                                          description: 'Promoção de Cyber Sunday',
                                          code: 'CYBER10', discount_rate: 15,
-                                         expiration_date: '22/12/2033')
+                                         expiration_date: '22/12/2033', user: user)
 
     promotion_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                                          description: 'Promoção de Cyber Monday',
                                          code: 'CYBER15', discount_rate: 15,
-                                         expiration_date: '22/12/2033')
+                                         expiration_date: '22/12/2033', user: user)
     visit promotions_path
 
 
@@ -144,21 +146,21 @@ class PromotionsIndexTest < ApplicationSystemTestCase
   end
 
   test "should search find nothing" do
-    login_user
+    user = login_user
 
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
 
     promotion_sunday = Promotion.create!(name: 'Cyber Sunday', coupon_quantity: 90,
                                          description: 'Promoção de Cyber Sunday',
                                          code: 'CYBER10', discount_rate: 15,
-                                         expiration_date: '22/12/2033')
+                                         expiration_date: '22/12/2033', user: user)
 
     promotion_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                                          description: 'Promoção de Cyber Monday',
                                          code: 'CYBER15', discount_rate: 15,
-                                         expiration_date: '22/12/2033')
+                                         expiration_date: '22/12/2033', user: user)
     visit promotions_path
 
     fill_in "", with: "Carnaval"

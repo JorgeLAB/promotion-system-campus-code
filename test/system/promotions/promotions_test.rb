@@ -4,24 +4,22 @@ class PromotionsTest < ApplicationSystemTestCase
 
   include LoginMacros
 
-  test 'view promotions' do # seeing promotions corrigir para present continues
-    # arrange
+  test 'view promotions' do
+
+    user = login_user
+
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: Time.zone.tomorrow, user: user)
 
     Promotion.create!(name: 'Cyber Monday', coupon_quantity: 100,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033')
+                      expiration_date: Time.zone.tomorrow, user: user)
 
-    login_user
-
-    # act
     visit root_path
     click_on 'Promoções'
 
-    # assert
     assert_text 'Natal'
     assert_text 'Promoção de Natal'
     assert_text '10,00%'
@@ -31,16 +29,18 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotion details' do # seeing a promotion corrigir para present continues
+
+    user = login_user
+
     Promotion.create!(name: 'Natal', coupon_quantity: 100,
                       description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10,
-                      expiration_date: '22/12/2033')
+                      expiration_date: Time.zone.tomorrow, user: user)
 
     Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033')
-    login_user
+                      expiration_date: Time.zone.tomorrow, user: user)
 
     visit promotions_path
 
@@ -50,7 +50,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'Promoção de Cyber Monday'
     assert_text '15,00%'
     assert_text 'CYBER15'
-    assert_text '22/12/2033'
+    assert_text I18n.l(Date.tomorrow, format: '%d/%m/%Y')
     assert_text '90'
   end
 
@@ -74,11 +74,11 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view details and return to promotions page' do
+    user = login_user
+
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
-
-    login_user
+                      expiration_date: Time.zone.tomorrow, user: user)
 
     visit root_path
 
@@ -89,12 +89,12 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'should generate coupons' do
+    user = login_user
+
     promotion = Promotion.create!(name: 'Natal', coupon_quantity: 100,
                                   description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10,
-                                  expiration_date: '22/12/2033')
-
-    login_user
+                                  expiration_date: Time.zone.tomorrow, user: user)
 
     visit promotion_path promotion
 
@@ -108,11 +108,13 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'generate coupons button need hide' do
+
+    user = login_user
+
     promotion = Promotion.create!(name: 'Natal', coupon_quantity: 100,
                               description: 'Promoção de Natal',
                               code: 'NATAL10', discount_rate: 10,
-                              expiration_date: '22/12/2033')
-    login_user
+                              expiration_date: Time.zone.tomorrow, user: user)
 
     visit promotion_path promotion
 
@@ -121,7 +123,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_no_link 'Gerar coupons'
   end
 
-  test 'create promotion' do
+  test 'create promotion'do
     login_user
 
     visit new_promotion_path
@@ -133,7 +135,7 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Código', with: 'CYBER15'
     fill_in 'Desconto', with: '15'
     fill_in 'Quantidade de Coupons', with: '90'
-    fill_in 'Data de término', with: I18n.l(Date.today, format: '%m-%d-%Y')
+    fill_in 'Data de término', with: Time.zone.tomorrow
     click_on 'Criar Promoção'
 
     assert_text 'Promoção criada com sucesso.'
@@ -141,9 +143,27 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'Promoção de Cyber Monday'
     assert_text '15,00%'
     assert_text 'CYBER15'
-    assert_text  I18n.l(Date.today, format: '%d/%m/%Y')
+    assert_text  I18n.l(Date.tomorrow, format: '%d/%m/%Y')
     assert_text '90'
     assert_link 'Voltar'
+  end
+
+  test 'expiration_date need to be valid' do
+    login_user
+
+    visit new_promotion_path
+
+    assert_text 'Criar Promoção'
+
+    fill_in 'Nome', with: 'Cyber Monday'
+    fill_in 'Descrição', with: 'Promoção de Cyber Monday'
+    fill_in 'Código', with: 'CYBER15'
+    fill_in 'Desconto', with: '15'
+    fill_in 'Quantidade de Coupons', with: '90'
+    fill_in 'Data de término', with: Time.zone.yesterday
+    click_on 'Criar Promoção'
+
+    assert_text 'Data inválida - data tem de ser futura'
   end
 
   test 'create and attributes cannot be blank' do
@@ -157,10 +177,11 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'code and name must be unique' do
+    user = login_user
+
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
-    login_user
+                      expiration_date: Time.zone.tomorrow, user: user)
 
     visit new_promotion_path
 
@@ -172,12 +193,12 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'edit promotion' do
+    user = login_user
+
     promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
                                   code: 'Free22', discount_rate: 40, coupon_quantity: 200,
-                                  expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
+                                  expiration_date: Time.zone.tomorrow, user: user
                                   )
-
-    login_user
 
     visit promotion_path(promotion)
 
@@ -190,11 +211,11 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_selector "form input[type=text][value='Free22']"
     assert_selector "form input[type=number][value='40.0']"
     assert_selector "form input[type=number][value='200']"
-    assert_selector "form input[type=date][value='#{I18n.l(Date.today, format: '%Y-%m-%d')}']"
+    assert_selector "form input[type=date][value='#{I18n.l(Date.tomorrow, format: '%Y-%m-%d')}']"
 
     fill_in 'Nome', with: 'Páscoa'
     fill_in 'Descrição', with: 'Ovo de Páscoa'
-    fill_in 'Data de término', with: I18n.l(Date.today.tomorrow, format: '%m-%d-%Y')
+    fill_in 'Data de término', with: I18n.l(Date.tomorrow + 2.day, format: '%m-%d-%Y')
 
     click_on 'Atualizar Promoção'
 
@@ -204,15 +225,16 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'Free22'
     assert_text '40'
     assert_text '200'
-    assert_text I18n.l(Date.today.tomorrow, format: '%d/%m/%Y')
+    assert_text I18n.l(Date.tomorrow + 2.day, format: '%d/%m/%Y')
   end
 
   test 'edit promotion cannot be blank' do
+    user = login_user
+
     promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
                                   code: 'Free22', discount_rate: 40, coupon_quantity: 200,
-                                  expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
+                                  expiration_date: Time.zone.tomorrow, user: user
                                   )
-    login_user
 
     visit edit_promotion_path promotion
 
@@ -229,13 +251,13 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'cannot edit a promotion with generated coupons' do
+    user = login_user
+
     promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
                                   code: 'Free22', discount_rate: 40, coupon_quantity: 200,
-                                  expiration_date: I18n.l(Date.today, format: '%Y-%m-%d')
+                                  expiration_date: Time.zone.tomorrow, user: user
                                   )
     promotion.generated_coupons!
-
-    login_user
 
     visit promotions_path
 
@@ -249,10 +271,11 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'destroy promotion' do
+    user = login_user
+
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: '22/12/2033')
-    login_user
+                      code: 'NATAL10', discount_rate: 10,
+                      coupon_quantity: 100, expiration_date: Time.zone.tomorrow, user: user)
 
     visit promotions_path
 
@@ -265,15 +288,15 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy one promotion and not destroy others' do
+    user = login_user
+
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: Time.zone.tomorrow, user: user)
     Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033')
-
-    login_user
+                      expiration_date: Time.zone.tomorrow, user: user)
 
     visit promotions_path
 
@@ -295,16 +318,49 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'does not show promotion details without login' do
+    user = User.create!(email: 'mclovin@iugu.com.br', password: '1234567')
+
     promotion = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                   description: 'Promoção de Cyber Monday',
                   code: 'CYBER15', discount_rate: 15,
-                  expiration_date: '22/12/2033')
+                  expiration_date: Time.zone.tomorrow, user: user)
 
     visit promotion_path(promotion)
 
     assert_current_path new_user_session_path
   end
+
+  test 'user approves promotion' do
+    user = User.create!(email:'mc@iugu.com.br', password: '1234567')
+
+    promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
+                                  code: 'Free22', discount_rate: 40, coupon_quantity: 200,
+                                  expiration_date: Time.zone.tomorrow, user: user
+                                  )
+
+    login_user
+
+    visit promotions_path
+    accept_confirm { click_on 'Aprovar' }
+    assert_text "Promoção #{promotion.name} aprovada com sucesso!"
+    assert_text "Aprovada por: #{promotion.approver.email}"
+    refute_link 'Aprovar'
+  end
+
+  test 'user cannot approves his promotion' do
+    user = login_user
+
+    promotion = Promotion.create!(name: 'Independência', description: 'Promoção da independência.',
+                                  code: 'Free22', discount_rate: 40, coupon_quantity: 200,
+                                  expiration_date: Time.zone.tomorrow, user: user)
+
+    visit promotions_path
+    assert_text 'Aguardando Aprovação!'
+    refute_link 'Aprovar'
+  end
 end
 
 # Testaremos apenas rotas get já que são os únicos métodos permitidos para o uso de visit. Aqui vc não fará para POST, nem para PATCH, nem para DELETE ou PUT somente GET.
 # Para isso devemos realizar teste de integração.
+# TODO: teste de integração para approves.
+# TODO: teste de login da aprovação
