@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Validatable
+class FutureDateValidatable
   include ActiveModel::Validations
   attr_accessor :expiration_date
 
@@ -9,7 +9,7 @@ end
 
 class FutureDateValidatorTest < ActiveSupport::TestCase
   def setup
-    @obj = Validatable.new
+    @obj = FutureDateValidatable.new
   end
 
   test 'when the date is before the current date should be invalid' do
