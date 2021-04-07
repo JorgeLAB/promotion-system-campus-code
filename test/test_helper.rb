@@ -1,6 +1,9 @@
 ENV['RAILS_ENV'] ||= 'test'
 
 require 'simplecov'
+require 'coveralls'
+Coveralls.wear!('rails')
+
 SimpleCov.start 'rails' do
   add_filter 'jobs'
   add_filter 'mailers'
