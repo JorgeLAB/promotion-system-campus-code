@@ -6,7 +6,8 @@ ruby '2.7.1'
 gem 'rails', '~> 6.1.3'
 
 # Database
-gem 'sqlite3', '~> 1.4'
+gem 'sqlite3', '~> 1.4', :platform => [:ruby, :mswin, :mingw]
+gem "jdbc-sqlite3", :platform => :jruby
 
 # Server
 gem 'puma', '~> 5.0'
