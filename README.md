@@ -30,13 +30,13 @@ docker-compose up
 ```
 A aplicação pode ser derrubada com **Control + C**.
 
-Como acessar o conteiner da aplicação, execute:
+Como acessar o container da aplicação, execute:
 
 ```sh
 docker-compose run --rm app bash
 ```
 
-🚀 To view the system, just access the browser at the address: [localhost: 3000] (localhost: 3000)
+🚀 A aplicação pode ser acessada em [localhost: 3000] (localhost: 3000)
 
 ## Problemas que podem ocorrer (GNU/LINUX)
 
