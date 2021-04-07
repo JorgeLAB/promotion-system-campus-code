@@ -1,0 +1,2 @@
+before_script:
+  - psql -c "CREATE USER promotion WITH PASSWORD 'promotions';" -U postgres
