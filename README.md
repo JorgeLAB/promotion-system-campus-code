@@ -40,23 +40,22 @@ docker-compose run --rm app bash
 
 ## Problemas que podem ocorrer (GNU/LINUX)
 
-* A aplicação após ser derrubada pode ainda conter o **pid** do processo do server.
+➡️  A aplicação após ser derrubada pode ainda conter o **pid** do processo do server.
 
 ```sh
 A server is already running. Check /home/user/Documents/promotion-system/tmp/pids/server.pid.
 ```
-➡️ Solução, remova server.pid:
+Solução, remova server.pid:
 
 ```sh
 rm /home/user/Documents/promotion-system/tmp/pids/server.pid.
 ```
 
-* A aplicação pode dar error de permissão:
+➡️ A aplicação pode dar error de permissão:
 ```
   Permission denied @ apply2files
 ```
-
-➡️ Solução, dê permissão à sua aplicação, dentro da raiz de seu projeto digíte:
+Solução, dê permissão à sua aplicação, dentro da raiz de seu projeto digíte:
 
 ```sh
   sudo chown -R $USER:$USER .
