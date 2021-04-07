@@ -15,8 +15,12 @@ class Promotion < ApplicationRecord
   def generated_coupons!
     return if coupons?
 
-    coupons.create_with( created_at: Time.now, updated_at: Time.now )
-           .insert_all( coupons_generated )
+    # coupons.create_with( created_at: Time.now, updated_at: Time.now )
+    #        .insert_all( coupons_generated )
+
+    coupons_generated.each do |coupon|
+      coupons.create!(coupon)
+    end
   end
 
   def coupons?
