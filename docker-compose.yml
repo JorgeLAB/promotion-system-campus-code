@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  webpacker:
+    build: .
+    command: ["./scripts/start_webpack_dev.sh"]
+    volumes:
+      - .:/promotion_system:cached
+    ports:
+      - 3035:3035
+
+  app:
+    build:
+      context: .
+      args:
+        precompileassets: 'not'
+    command: ["./scripts/start_rails.sh"]
+    ports:
+      - "3000:3000"
+    volumes:
+      - ".:/promotion_system"
+      - gems:/gems
+    depends_on:
+      - webpacker
+
+volumes:
+  gems:
