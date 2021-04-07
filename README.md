@@ -36,7 +36,7 @@ Como acessar o container da aplicação, execute:
 docker-compose run --rm app bash
 ```
 
-🚀 A aplicação pode ser acessada em [localhost: 3000] (localhost: 3000)
+🚀 A aplicação pode ser acessada em [localhost: 3000](http://localhost:3000/)
 
 ## Problemas que podem ocorrer (GNU/LINUX)
 
