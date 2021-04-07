@@ -4,17 +4,20 @@ class PromotionsIndexTest < ApplicationSystemTestCase
 
   include LoginMacros
 
+  def setup
+    @user = login_user
+  end
+
   test 'have a table with promotions' do
 
-    user = login_user
     promotion_natal = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                         code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                        expiration_date: '22/12/2033', user: user)
+                                        expiration_date: Time.zone.tomorrow, user: @user)
 
     promotion_cyber = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 100,
                                         description: 'Promoção de Cyber Monday',
                                         code: 'CYBER15', discount_rate: 15,
-                                        expiration_date: '22/12/2033',  user: user)
+                                        expiration_date: Time.zone.tomorrow,  user: @user)
 
     visit promotions_path
 
@@ -43,25 +46,7 @@ class PromotionsIndexTest < ApplicationSystemTestCase
     end
   end
 
-  test 'can not search a promotion without login' do
-    user = User.create!(email: 'mclovin@iugu.com.br', password:'1234567')
-
-    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
-                      description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033', user: user)
-
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
-
-    visit search_promotions_path(query: 'Natal')
-
-    assert_current_path new_user_session_path
-  end
-
   test 'should search field in the index promotion' do
-    login_user
 
     visit promotions_path
 
@@ -71,16 +56,15 @@ class PromotionsIndexTest < ApplicationSystemTestCase
   end
 
   test "should search with your exact name" do
-    user = login_user
 
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+                      expiration_date: Time.zone.tomorrow, user: @user)
 
     promotion_cyber = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                                         description: 'Promoção de Cyber Monday',
                                         code: 'CYBER15', discount_rate: 15,
-                                        expiration_date: '22/12/2033', user: user)
+                                        expiration_date: Time.zone.tomorrow, user: @user)
 
     visit promotions_path
 
@@ -102,21 +86,20 @@ class PromotionsIndexTest < ApplicationSystemTestCase
   end
 
   test "should search with partial name" do
-    user = login_user
 
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+                      expiration_date: Time.zone.tomorrow, user: @user)
 
     promotion_sunday = Promotion.create!(name: 'Cyber Sunday', coupon_quantity: 90,
                                          description: 'Promoção de Cyber Sunday',
                                          code: 'CYBER10', discount_rate: 15,
-                                         expiration_date: '22/12/2033', user: user)
+                                         expiration_date: Time.zone.tomorrow, user: @user)
 
     promotion_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                                          description: 'Promoção de Cyber Monday',
                                          code: 'CYBER15', discount_rate: 15,
-                                         expiration_date: '22/12/2033', user: user)
+                                         expiration_date: Time.zone.tomorrow, user: @user)
     visit promotions_path
 
 
@@ -146,21 +129,20 @@ class PromotionsIndexTest < ApplicationSystemTestCase
   end
 
   test "should search find nothing" do
-    user = login_user
 
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+                      expiration_date: Time.zone.tomorrow, user: @user)
 
     promotion_sunday = Promotion.create!(name: 'Cyber Sunday', coupon_quantity: 90,
                                          description: 'Promoção de Cyber Sunday',
                                          code: 'CYBER10', discount_rate: 15,
-                                         expiration_date: '22/12/2033', user: user)
+                                         expiration_date: Time.zone.tomorrow, user: @user)
 
     promotion_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                                          description: 'Promoção de Cyber Monday',
                                          code: 'CYBER15', discount_rate: 15,
-                                         expiration_date: '22/12/2033', user: user)
+                                         expiration_date: Time.zone.tomorrow, user: @user)
     visit promotions_path
 
     fill_in "", with: "Carnaval"

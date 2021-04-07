@@ -1,11 +1,5 @@
 require 'application_system_test_case'
 
-# AAA
-
-# Arrange
-# Act    => visitar o root_path
-# Assert => verificar
-
 class HomeTest < ApplicationSystemTestCase
   test 'visiting the index' do
     visit root_path
