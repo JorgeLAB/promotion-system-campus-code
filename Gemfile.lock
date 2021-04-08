@@ -110,6 +110,8 @@ GEM
       domain_name (~> 0.5)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    jbuilder (2.10.2)
+      activesupport (>= 5.0.0)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -146,6 +148,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-mini-profiler (2.3.1)
       rack (>= 1.2.0)
     rack-proxy (0.6.5)
@@ -284,10 +288,12 @@ DEPENDENCIES
   coveralls
   coveralls_reborn (~> 0.21.0)
   devise
+  jbuilder (~> 2.10.1)
   jdbc-sqlite3
   listen (~> 3.3)
   pry-byebug
   puma (~> 5.0)
+  rack-cors
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.3)
   rubocop

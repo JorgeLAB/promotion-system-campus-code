@@ -21,6 +21,12 @@ gem 'webpacker', '~> 5.0'
 # Authentication
 gem 'devise'
 
+#CORS
+gem 'rack-cors'
+
+#Rendering
+gem 'jbuilder', '~> 2.10.1'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-byebug'
