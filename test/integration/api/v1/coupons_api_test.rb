@@ -57,9 +57,7 @@ class CouponsApiTest < ActionDispatch::IntegrationTest
 
     post '/api/v1/coupons/NATAL10-0001/disable'
 
-    coupon.reload
-
-    assert_equal coupon.status, 'disabled'
+    assert_equal coupon.reload.status, 'disabled'
   end
 
   test 'disable coupon returns status no_content' do
@@ -103,9 +101,7 @@ class CouponsApiTest < ActionDispatch::IntegrationTest
 
     post '/api/v1/coupons/NATAL10-0001/enable'
 
-    coupon.reload
-
-    assert_equal coupon.status, "active"
+    assert_equal coupon.reload.status, "active"
   end
 
   test 'enable coupon returns a status no_content' do
