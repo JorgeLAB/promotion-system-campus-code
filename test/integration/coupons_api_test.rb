@@ -1,12 +1,15 @@
 require 'test_helper'
 
 class CouponsApiTest < ActionDispatch::IntegrationTest
-  test 'show coupon' do
-    user = User.create!(name: 'IuguBot', email: 'mclovin@iugu.com.br', password: '1234567')
 
+  def setup
+    @user = User.create!(name: 'IuguBot', email: 'mclovin@iugu.com.br', password: '1234567')
+  end
+
+  test 'show coupon' do
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: Time.zone.tomorrow, user: user)
+                                  expiration_date: Time.zone.tomorrow, user: @user)
 
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
@@ -18,11 +21,10 @@ class CouponsApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'show coupon returns success status' do
-    user = User.create!(name: 'IuguBot', email: 'mclovin@iugu.com.br', password: '1234567')
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: Time.zone.tomorrow, user: user)
+                                  expiration_date: Time.zone.tomorrow, user: @user)
 
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
@@ -41,5 +43,81 @@ class CouponsApiTest < ActionDispatch::IntegrationTest
     assert_raises ActionController::RoutingError do
       get "/api/v1/coupon/0"
     end
+  end
+
+  test 'disable coupon' do
+
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: Time.zone.tomorrow, user: @user)
+
+    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
+
+    assert_equal coupon.status, "active"
+
+    post '/api/v1/coupons/NATAL10-0001/disable'
+
+    coupon.reload
+
+    assert_equal coupon.status, 'disabled'
+  end
+
+  test 'disable coupon returns status no_content' do
+
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                              code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                              expiration_date: Time.zone.tomorrow, user: @user)
+
+    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
+
+    post '/api/v1/coupons/NATAL10-0001/disable'
+
+    assert_response :no_content
+  end
+
+  test 'disable coupon returns error when attempt disable a disabled coupon' do
+
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                              code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                              expiration_date: Time.zone.tomorrow, user: @user)
+
+    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion, status: :disabled)
+
+    post '/api/v1/coupons/NATAL10-0001/disable'
+
+    assert_response 404
+    body = JSON.parse(response.body, symbolize_names: true)
+
+    assert_equal "Coupon não encontrado", body[:errors][:message]
+  end
+
+  test 'enable a disabled coupon' do
+
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                          code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                          expiration_date: Time.zone.tomorrow, user: @user)
+
+    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion, status: :disabled)
+
+    assert_equal coupon.status, "disabled"
+
+    post '/api/v1/coupons/NATAL10-0001/enable'
+
+    coupon.reload
+
+    assert_equal coupon.status, "active"
+  end
+
+  test 'enable coupon returns a status no_content' do
+
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: Time.zone.tomorrow, user: @user)
+
+    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion, status: :disabled)
+
+    post '/api/v1/coupons/NATAL10-0001/enable'
+
+    assert_response :no_content
   end
 end
