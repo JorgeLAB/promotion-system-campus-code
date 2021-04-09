@@ -1,8 +1,8 @@
-if Rails.env.development? || Rails.env.test?
+if Rails.env.development?
 
   namespace :dev do
     desc "Sample data for local development environment"
-    task prime: "db:setup" do
+    task prime: [:environment, "db:setup"] do
 
       puts "\n=== Criando Usuários ===\n"
 
@@ -12,13 +12,10 @@ if Rails.env.development? || Rails.env.test?
 
       puts "=== Criando Promoções ===\n"
 
-      promotions = []
-
-      users.each do |user|
-        promotions << Fabricate.times( rand(0..5), :promotion, user: user )
-      end
-
-      promotions.flatten!
+      promotions =
+        users.flat_map do |user|
+          Fabricate.times( rand(0..5), :promotion, user: user )
+        end
 
       puts "   #{promotions.size} promoções foram geradas. \n"
 
@@ -26,15 +23,13 @@ if Rails.env.development? || Rails.env.test?
 
       promotions
         .select { |promotion| promotion.coupon_quantity.odd? }
-        .each do |promotion|
-          promotion.generated_coupons!
-        end
+        .each(&:generated_coupons!)
 
       puts "   Coupons gerados.\n"
 
       puts "=== Gerando Categorias de Produto ===\n"
 
-      product_categories = Fabricate.times(20, :product_category)
+      product_categories = Fabricate.times(50, :product_category)
 
       puts "   #{product_categories.size} Categorias de produto geradas."
     end
