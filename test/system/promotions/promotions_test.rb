@@ -10,24 +10,16 @@ class PromotionsTest < ApplicationSystemTestCase
 
   test 'view promotions' do
 
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: Time.zone.tomorrow, user: @user)
-
-    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 100,
-                      description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15', discount_rate: 15,
-                      expiration_date: Time.zone.tomorrow, user: @user)
+    promotions = Fabricate.times(2, :promotion, user: @user)
 
     visit root_path
     click_on 'Promoções'
 
-    assert_text 'Natal'
-    assert_text 'Promoção de Natal'
-    assert_text '10,00%'
-    assert_text 'Cyber Monday'
-    assert_text 'Promoção de Cyber Monday'
-    assert_text '15,00%'
+    promotions.each do |promotion|
+      assert_text promotion.name
+      assert_text promotion.description
+      assert_text number_to_percentage(promotion.discount_rate, precision: 2)
+    end
   end
 
   test 'view promotion details' do # seeing a promotion corrigir para present continues
