@@ -83,10 +83,9 @@ class CouponsApiTest < ActionDispatch::IntegrationTest
 
     post '/api/v1/coupons/NATAL10-0001/disable'
 
-    assert_response 404
     body = JSON.parse(response.body, symbolize_names: true)
 
-    assert_equal "Coupon não encontrado", body[:errors][:message]
+    assert_equal "Não encontrado", body[:errors][:message]
   end
 
   test 'enable a disabled coupon' do
