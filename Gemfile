@@ -30,6 +30,8 @@ gem 'jbuilder', '~> 2.10.1'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-byebug'
+  gem 'fabrication'
+  gem 'faker'
 end
 
 group :development do
