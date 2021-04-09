@@ -18,6 +18,7 @@ Dir[Rails.root.join('test/support/**/*.rb')].each { |f| require f }
 class ActiveSupport::TestCase
 
   include Warden::Test::Helpers
+  include ActionView::Helpers::NumberHelper
 
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)

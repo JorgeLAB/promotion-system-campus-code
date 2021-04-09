@@ -5,19 +5,18 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   include LoginMacros
 
   test 'viewing product_categories index' do
-    ProductCategory.create!( name: 'Produto Curso', code: 'CURSO' )
-    ProductCategory.create!( name: 'Produto Natalino', code: 'NATALINO' )
+
+    product_categories = Fabricate.times(2, :product_category)
 
     login_user
 
     visit root_path
     click_on 'Categorias'
 
-    assert_text 'Produto Curso'
-    assert_text 'CURSO'
-
-    assert_text 'Produto Natalino'
-    assert_text 'NATALINO'
+    product_categories.each do |category|
+      assert_text category.name
+      assert_text category.code
+    end
   end
 
   test 'no product_categories available' do

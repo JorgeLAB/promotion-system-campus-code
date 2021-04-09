@@ -1,5 +1,5 @@
 module LoginMacros
-  def login_user(user = User.create!(name: 'Jorge', email: "mclovin@iugu.com.br", password: "1234567"))
+  def login_user(user = Fabricate(:user))
     login_as user, scope: :user
     user
   end
