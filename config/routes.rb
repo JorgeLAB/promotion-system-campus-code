@@ -23,7 +23,7 @@ Rails.application.routes.draw do
         post 'disable', on: :member
         post 'enable', on: :member
       end
-      resources :product_categories, only: [:index, :show, :create], param: :code
+      resources :product_categories, only: [:index, :show, :create, :destroy], param: :code
     end
   end
 end

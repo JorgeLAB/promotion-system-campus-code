@@ -113,4 +113,38 @@ class ProductCategoriesApiTest < ActionDispatch::IntegrationTest
 
     assert_includes body["errors"]["fields"], "name"
   end
+
+  test 'destroy a product category returns no_content status' do
+    product_category = Fabricate(:product_category)
+
+    delete "/api/v1/product_categories/#{product_category.code}"
+
+    assert_response :no_content
+  end
+
+  test 'destroy a product category should remove of ProductCategory' do
+    product_category = Fabricate(:product_category)
+
+    assert_difference ->{ ProductCategory.count } => -1 do
+      delete "/api/v1/product_categories/#{product_category.code}"
+    end
+  end
+
+  test 'can not destroy a product category with invalid code' do
+    product_category = Fabricate(:product_category)
+
+    assert_no_changes "ProductCategory.count" do
+      delete "/api/v1/product_categories/#{product_category.code}_INVALID"
+    end
+  end
+
+  test 'destroy a invalid product category returns error message' do
+    product_category = Fabricate(:product_category)
+
+    delete "/api/v1/product_categories/#{product_category.code}_INVALID"
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Não encontrado", body["errors"]["message"]
+  end
 end
