@@ -114,6 +114,87 @@ class ProductCategoriesApiTest < ActionDispatch::IntegrationTest
     assert_includes body["errors"]["fields"], "name"
   end
 
+  test 'update product category returns success status with valid params' do
+    product_category = Fabricate(:product_category)
+    new_name = "Promoção de TESTE"
+    new_product_category_params = { product_category: { name: new_name } }
+
+    patch "/api/v1/product_categories/#{product_category.code}", params: new_product_category_params
+
+    assert_response :ok
+  end
+
+  test 'update product category should returns updated category with valid params' do
+    product_category = Fabricate(:product_category)
+    new_name = "Promoção de TESTE"
+    new_product_category_params = { product_category: { name: new_name } }
+
+    patch "/api/v1/product_categories/#{product_category.code}", params: new_product_category_params
+    body = JSON.parse(response.body)
+    product_category.reload
+    expected_product_category = product_category.as_json(only: %i(name code))
+
+    assert_equal expected_product_category, body["product_category"]
+  end
+
+  test 'update product category should returns status unprocessable_entity with invalid params' do
+
+    product_category = Fabricate(:product_category)
+    new_product_category_params = { product_category: { name: nil } }
+
+    patch "/api/v1/product_categories/#{product_category.code}", params: new_product_category_params
+
+    assert_response :unprocessable_entity
+  end
+
+  test 'update product category should returns name error message with invalid params' do
+
+    product_category = Fabricate(:product_category)
+    new_product_category_params = { product_category: { name: nil } }
+
+    patch "/api/v1/product_categories/#{product_category.code}", params: new_product_category_params
+    body = JSON.parse(response.body)
+
+    assert_includes body["errors"]["fields"], "name"
+  end
+
+  test 'cannot update product category with invalid params' do
+    old_product_category_name = "Promoção de TESTE"
+    product_category = Fabricate(:product_category, name: old_product_category_name)
+    new_product_category_params = { product_category: { name: nil } }
+
+    patch "/api/v1/product_categories/#{product_category.code}", params: new_product_category_params
+    product_category.reload
+
+    assert_equal product_category.name, old_product_category_name
+  end
+
+  test 'cannot update product category with repeated code' do
+    parameter_product_category = Fabricate(:product_category)
+
+    old_product_category_code = "TESTE"
+    product_category = Fabricate(:product_category, code: old_product_category_code)
+    new_product_category_params = { product_category: { code: parameter_product_category.code } }
+
+    patch "/api/v1/product_categories/#{product_category.code}", params: new_product_category_params
+    product_category.reload
+
+    assert_equal product_category.code, old_product_category_code
+  end
+
+  test 'update product category should return code message error with repeated code params' do
+    parameter_product_category = Fabricate(:product_category)
+    old_product_category_code = "TESTE"
+    product_category = Fabricate(:product_category, code: old_product_category_code)
+    new_product_category_params = { product_category: { code: parameter_product_category.code } }
+
+    patch "/api/v1/product_categories/#{product_category.code}", params: new_product_category_params
+
+    body = JSON.parse(response.body)
+
+    assert_includes body["errors"]["fields"], "code"
+  end
+
   test 'destroy a product category returns no_content status' do
     product_category = Fabricate(:product_category)
 

@@ -17,6 +17,15 @@ module Api::V1
       render_error(fields: @product_category.errors.messages)
     end
 
+    def update
+      @product_category = ProductCategory.find_by!(code: params[:code])
+      @product_category.update!(params_product_category)
+
+      render :show
+    rescue
+      render_error(fields: @product_category.errors.messages)
+    end
+
     def destroy
       @product_category = ProductCategory.find_by!(code: params[:code])
       @product_category.destroy!
