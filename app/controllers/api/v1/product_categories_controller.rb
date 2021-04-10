@@ -13,6 +13,7 @@ module Api::V1
       @product_category.attributes = params_product_category
 
       @product_category.save!
+      render :show
     rescue
       render_error(fields: @product_category.errors.messages)
     end
