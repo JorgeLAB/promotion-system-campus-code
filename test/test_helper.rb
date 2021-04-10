@@ -19,6 +19,7 @@ class ActiveSupport::TestCase
 
   include Warden::Test::Helpers
   include ActionView::Helpers::NumberHelper
+  include IntegrationApi
 
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
